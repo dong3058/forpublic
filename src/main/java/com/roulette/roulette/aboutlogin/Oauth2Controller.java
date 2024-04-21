@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.*;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -35,9 +36,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -87,6 +86,29 @@ public class Oauth2Controller {
         log.info("kakakoredirdct:{}",kakakoredirecturi);
         log.info("kakaoid:{}",kakaoclientid);
         RestTemplate rt = new RestTemplate();
+        //HttpHeaders headers = new HttpHeaders();
+
+
+
+
+
+        String proxyHost = "krmp-proxy.9rum.cc";
+        int proxyPort = 3128;
+
+        // RestTemplate을 생성합니다.
+        //RestTemplate restTemplate = new RestTemplate();
+
+        // SimpleClientHttpRequestFactory를 생성합니다.
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+
+        // 프록시 설정을 합니다.
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+        requestFactory.setProxy(proxy);
+
+        // RestTemplate에 설정합니다.
+        rt.setRequestFactory(requestFactory);
+
+        // HTTP 요청을 보냅니다.
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> accessTokenParams = accessTokenParams("authorization_code",kakaoclientid,code,kakakoredirecturi);
@@ -96,6 +118,25 @@ public class Oauth2Controller {
                 HttpMethod.POST,
                 accessTokenRequest,
                 String.class);
+
+
+
+
+
+
+
+
+
+
+
+        /*headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        MultiValueMap<String, String> accessTokenParams = accessTokenParams("authorization_code",kakaoclientid,code,kakakoredirecturi);
+        HttpEntity<MultiValueMap<String, String>> accessTokenRequest = new HttpEntity<>(accessTokenParams, headers);
+        ResponseEntity<String> accessTokenResponse = rt.exchange(
+                tokenuri,
+                HttpMethod.POST,
+                accessTokenRequest,
+                String.class);*/
 
         try {
 
