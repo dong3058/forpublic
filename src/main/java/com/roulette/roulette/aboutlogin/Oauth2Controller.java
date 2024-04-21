@@ -206,7 +206,8 @@ public class Oauth2Controller {
     @GetMapping("/api1")
     @ResponseBody
     public String api1(){
-
+        log.info("kakaoredirecturl:{}",kakakoredirecturi);
+        log.info("kakaoid:{}",kakaoclientid);
         return "api1";
     }
 
