@@ -38,6 +38,7 @@ public class Oauth2Controller {
     }
     @GetMapping("/kakaologin")
     public void kakaologin(HttpServletResponse resp)throws IOException {
+        log.info("kakakologin check");
         resp.sendRedirect("/oauth2/authorization/kakao");
     }
 
@@ -46,6 +47,7 @@ public class Oauth2Controller {
 
     @GetMapping("/googlelogin")
     public void googlelogin(HttpServletResponse resp)throws IOException {
+        log.info("google login check");
         resp.sendRedirect("/oauth2/authorization/google");
     }
 
