@@ -325,6 +325,7 @@ public class Oauth2Controller {
             for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 log.info("get메서드 중간의 for문");
                 log.info("값체크con:{}", con);
+                log.info("헤더값 체크 :{}  value:{}",header.getKey(),header.getValue());
                 con.setRequestProperty(header.getKey(), header.getValue());
 
                 log.info("값체크:{}", con.getRequestProperties());
