@@ -50,8 +50,8 @@ public class Oauth2Controller {
     @Value("${spring.secuirty.oauth2.registraion.kakao.client-id}")
     private String kakaoclientid;
 
-    @Value("${spring.security.oauth2.registraion.kakao.redirect-uri}")
-    private String kakakoredirecturi;
+    //@Value("${spring.security.oauth2.registraion.kakao.redirect-uri}")
+    private String kakakoredirecturi="https://k9bceeba41403a.user-app.krampoline.com/login/oauth2/code/kakao";
 
 
     @Value("${spring.security.oauth2.provider.kakao.token-uri}")
