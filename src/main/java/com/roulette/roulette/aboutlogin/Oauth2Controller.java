@@ -37,8 +37,16 @@ public class Oauth2Controller {
         this.memberService=memberService;
     }
     @GetMapping("/kakaologin")
-    public void googlelogin(HttpServletResponse resp)throws IOException {
+    public void kakaologin(HttpServletResponse resp)throws IOException {
         resp.sendRedirect("/oauth2/authorization/kakao");
+    }
+
+
+
+
+    @GetMapping("/googlelogin")
+    public void googlelogin(HttpServletResponse resp)throws IOException {
+        resp.sendRedirect("/oauth2/authorization/google");
     }
 
     @GetMapping("/api1")
