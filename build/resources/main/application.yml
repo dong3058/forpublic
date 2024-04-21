@@ -16,7 +16,7 @@ spring:
               - profile
           kakao:
             client-id: aad9fffaff5b6655b991487c5ff8b445
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: https://k9bceeba41403a.user-app.krampoline.com/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope:
