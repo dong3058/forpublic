@@ -98,6 +98,9 @@ public class Oauth2Controller {
                 String.class);
 
         try {
+
+
+            log.info("try");
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(accessTokenResponse.getBody());
             //session.setAttribute("Authorization", jsonObject.get("access_token"));
