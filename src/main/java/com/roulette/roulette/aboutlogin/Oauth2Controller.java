@@ -317,12 +317,15 @@ public class Oauth2Controller {
 
             log.info("try in get");
             con.setRequestMethod("GET");
+            log.info("con.setrequestmethod");
             for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
+                log.info("get메서드 중간의 for문");
                 con.setRequestProperty(header.getKey(), header.getValue());
             }
 
 
             int responseCode = con.getResponseCode();
+            log.info("responsecode:{}",responseCode);
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
 
                 log.info("정상 호출 in get 메서드");
