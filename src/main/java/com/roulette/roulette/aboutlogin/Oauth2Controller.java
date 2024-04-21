@@ -47,18 +47,19 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class Oauth2Controller {
 
-    @Value("${spring.secuirty.oauth2.registraion.kakao.client-id}")
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String kakaoclientid;
 
-    //@Value("${spring.security.oauth2.registraion.kakao.redirect-uri}")
+    //@Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    //private String kakakoredirecturi;
     private String kakakoredirecturi="https://k9bceeba41403a.user-app.krampoline.com/login/oauth2/code/kakao";
 
 
-    @Value("${spring.security.oauth2.provider.kakao.token-uri}")
+    @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String tokenuri;
 
 
-    @Value("${spring.security.oauth2.provider.kakao.user-info-uri}")
+    @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String userinfouri;
     private RedisTemplate<String,String> redisTemplate;
 
@@ -83,6 +84,8 @@ public class Oauth2Controller {
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> loginreal(@PathVariable(name="code")String code,HttpServletResponse resp){
         log.info("-------------cocde----------:{}",code);
+        log.info("kakakoredirdct:{}",kakakoredirecturi);
+        log.info("kakaoid:{}",kakaoclientid);
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");

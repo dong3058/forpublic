@@ -16,7 +16,7 @@ spring:
               - profile
           kakao:
             client-id: aad9fffaff5b6655b991487c5ff8b445
-            redirect-uri: https://kffa9824affd9a.user-app.krampoline.com/login/oauth2/code/kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope:
@@ -39,10 +39,11 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb:3306/krampoline?allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/webide
     username: root
-    password: root
+    password: 1234
+
   jpa:
     properties:
       hibernate:
@@ -50,7 +51,7 @@ spring:
         format_sql: true
         highlight_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 jwt:
   secret: abcdegfhikmlmlmlmllmlmlmllmlmlllllllllllllllllll
