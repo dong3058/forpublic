@@ -165,7 +165,7 @@ public class Oauth2Controller {
 
 
 
-            String token=gettokenandresponse(email,userName,member,resp);
+            String token = gettokenandresponse(email, userName, member, resp);
 
 
             log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token);
@@ -313,6 +313,9 @@ public class Oauth2Controller {
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
+
+
+            log.info("try in get");
             con.setRequestMethod("GET");
             for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
                 con.setRequestProperty(header.getKey(), header.getValue());
@@ -334,6 +337,9 @@ public class Oauth2Controller {
 
     private static HttpURLConnection connect(String apiUrl) {
         try {
+
+
+            log.info("url try");
             URL url = new URL(apiUrl);
             return (HttpURLConnection) url.openConnection();
         } catch (MalformedURLException e) {
@@ -350,6 +356,8 @@ public class Oauth2Controller {
 
 
         try (BufferedReader lineReader = new BufferedReader(streamReader)) {
+
+            log.info("read try");
             StringBuilder responseBody = new StringBuilder();
 
 
