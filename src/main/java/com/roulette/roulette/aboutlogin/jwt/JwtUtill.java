@@ -75,7 +75,7 @@ public class JwtUtill {
 
 
 
-   /* public JwtToken genjwt(Collection< ? extends GrantedAuthority> auth, String username, Long id){
+   public JwtToken genjwt2(Collection< ? extends GrantedAuthority> auth, String username, Long id){
 
         Random random=new Random();
         int int_value=random.ints().limit(3).sum();
@@ -107,7 +107,7 @@ public class JwtUtill {
                 .build();
 
 
-    }*/
+    }
     public Authentication getauthforrefresh(String token) {
         Claims claims = getclaims(token);
 

@@ -98,7 +98,7 @@ public class ExceptionHandling {
     public JwtToken refillaccesstoken(String token){
         Authentication authentication=jwtUtill.getauthforrefresh(token);
         Long id=jwtUtill.getidfromtoken(token);
-        JwtToken jwtToken=jwtUtill.genjwt(authentication.getAuthorities(),(String) authentication.getPrincipal(),id);
+        JwtToken jwtToken=jwtUtill.genjwt2(authentication.getAuthorities(),(String) authentication.getPrincipal(),id);
         return jwtToken;
     }
     public void savenewtoken(String oldtoken,JwtToken jwtToken){
