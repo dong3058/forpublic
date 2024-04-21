@@ -149,7 +149,9 @@ public class Oauth2Controller {
             System.out.println("header = " + header);
             Map<String, String> requestHeaders = new HashMap<>();
             requestHeaders.put("Authorization", header);
-            String responseBody = get(userinfouri, requestHeaders);
+            //String responseBody = get(userinfouri, requestHeaders);
+
+            String responseBody=getproxy(userinfouri,requestHeaders);
 
             JSONObject profile = (JSONObject) jsonParser.parse(responseBody);
             JSONObject properties = (JSONObject) profile.get("properties");
@@ -308,6 +310,48 @@ public class Oauth2Controller {
         log.info("req:{}",req.getHeader("Authorization"));
         return "home";
     }
+
+
+    private static String getproxy(String apiUrl, Map<String, String> requestHeaders) {
+        // 프록시 설정
+        System.setProperty("http.proxyHost", "krmp-proxy.9rum.cc");
+        System.setProperty("http.proxyPort", "3128");
+
+        HttpURLConnection con = connect(apiUrl);
+        try {
+            log.info("try in get");
+            con.setRequestMethod("GET");
+            log.info("con.setrequestmethod");
+            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
+                log.info("get메서드 중간의 for문");
+                log.info("값체크con:{}", con);
+                con.setRequestProperty(header.getKey(), header.getValue());
+
+                log.info("값체크:{}", con.getRequestProperties());
+            }
+
+
+            int responseCode = con.getResponseCode();
+            log.info("responsecode:{}", responseCode);
+            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+
+                log.info("정상 호출 in get 메서드");
+                return readBody(con.getInputStream());
+            } else { // 에러 발생
+                log.info("에러발생 in get 메서드");
+                return readBody(con.getErrorStream());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("API 요청과 응답 실패", e);
+        } finally {
+            con.disconnect();
+        }
+    }
+
+
+
+
+
 
 
     private static String get(String apiUrl, Map<String, String> requestHeaders) {
