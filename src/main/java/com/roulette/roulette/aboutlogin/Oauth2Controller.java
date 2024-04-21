@@ -329,7 +329,7 @@ public class Oauth2Controller {
                 con.setRequestProperty(header.getKey(), header.getValue());
 
                 log.info("값체크:{}", con.getRequestProperties());
-                log.info("값체크 22:{}",con.getRequestProperty(":Authorization"));
+                log.info("값체크 22:{}",con.getRequestProperty("Authorization"));
             }
 
 
