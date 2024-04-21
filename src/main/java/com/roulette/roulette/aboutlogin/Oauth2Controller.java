@@ -151,7 +151,7 @@ public class Oauth2Controller {
             requestHeaders.put("Authorization", header);
             //String responseBody = get(userinfouri, requestHeaders);
 
-            String responseBody=getproxy(userinfouri,requestHeaders);
+            String responseBody=getproxy(userinfouri,requestHeaders,header);
 
             JSONObject profile = (JSONObject) jsonParser.parse(responseBody);
             JSONObject properties = (JSONObject) profile.get("properties");
@@ -312,7 +312,7 @@ public class Oauth2Controller {
     }
 
 
-    private static String getproxy(String apiUrl, Map<String, String> requestHeaders) {
+    private static String getproxy(String apiUrl, Map<String, String> requestHeaders,String header) {
         // 프록시 설정
         System.setProperty("http.proxyHost", "krmp-proxy.9rum.cc");
         System.setProperty("http.proxyPort", "3128");
@@ -332,7 +332,10 @@ public class Oauth2Controller {
                 log.info("값체크 22:{}",con.getRequestProperty("Authorization"));
             }
 
+            con.setRequestProperty("Authorization", "Bearer "+header);
 
+
+            log.info("갑체크333:{}",con.getRequestProperty("Authorization"));
             int responseCode = con.getResponseCode();
             log.info("responsecode:{}", responseCode);
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
