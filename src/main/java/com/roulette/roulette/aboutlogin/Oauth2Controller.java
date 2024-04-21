@@ -80,6 +80,7 @@ public class Oauth2Controller {
 
 
     @GetMapping("/reqlogin/{code}")
+    @ResponseBody
     public ResponseEntity<AccessTokenRefresh> loginreal(@PathVariable(name="code")String code,HttpServletResponse resp){
         log.info("-------------cocde----------:{}",code);
         RestTemplate rt = new RestTemplate();

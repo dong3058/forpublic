@@ -39,11 +39,12 @@ public class Oauth2Config {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize)->{
                     authorize.requestMatchers("/logouts","/testdata").hasRole("user")
-                            .requestMatchers("/api2").hasRole("admin")
+                            /*.requestMatchers("/api2").hasRole("admin")
                             .requestMatchers("/login","/login/**","/","/styles.css","/test/**","/error/**","/googlelogin","/kakaologin","/api1","/reqlogin/**").permitAll()
                             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .anyRequest().authenticated();
-
+                             */
+                            .anyRequest().permitAll();
                 })
                 .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 /*.oauth2Login((login)->login
