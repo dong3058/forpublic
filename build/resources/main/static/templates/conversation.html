@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Application</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/chat.css}">
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-sidebar">
+        <!-- 사용자의 대화 목록 -->
+        <div class="chat-list">
+            <ul>
+                <li th:each="conversation : ${conversations}"
+                    th:class="${conversation.conversationId == selectedConversation.conversationId} ? 'selected' : ''"
+                    th:text="${#strings.listJoin(conversation.members.![name], ', ')}"
+                    th:data-convo-id="${conversation.conversationId}"
+                    th:onclick="'window.location.href=\'' + @{/chat/{memberId}/{conversationId}(memberId=${memberId}, conversationId=${conversation.conversationId})} + '\''">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="chat-main">
+        <!-- 대화 내용 -->
+        <div class="chat-header">
+            <h3 id="conversationName">Select a chat</h3>
+        </div>
+        <div class="chat-messages" id="chatWindow">
+            <div th:each="message : ${messages}" class="message">
+                <p th:text="${message.sender.name + ': ' + message.content}"></p>
+            </div>
+            <!-- 메시지들이 여기에 표시됩니다. -->
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var stompClient = null;
+    var selectedConversationId = /*[[${selectedConversation.conversationId}]]*/ 'default';
+    var senderId = window.location.pathname.split('/')[2];
+
+    function openConversation(element) {
+        var convoId = element.getAttribute('data-convo-id');
+        selectedConversationId = convoId;
+        $('#conversationName').text(element.textContent);
+        $('#chatWindow').empty(); // 이전 대화 내용을 지웁니다.
+
+        if(stompClient) {
+            stompClient.disconnect();
+        }
+
+        connectToChat(convoId);
+    }
+
+    $(document).ready(function() {
+        connectToChat();
+    });
+
+    function connectToChat() {
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/messages/' + selectedConversationId, function(message) {
+                showMessage(JSON.parse(message.body));
+            });
+        });
+    }
+
+    function sendMessage() {
+        var messageContent = $('#messageInput').val().trim();
+        if(messageContent && selectedConversationId) {
+            var chatMessage = {
+                content: messageContent,
+                conversationId: selectedConversationId,
+                senderId: parseInt(senderId)
+            };
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+            $('#messageInput').val('');
+        }
+    }
+
+    function showMessage(message) {
+        $('#chatWindow').append('<div class="message">' + message.sender.name + ': ' + message.content + '</div>');
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>
