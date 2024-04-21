@@ -80,8 +80,8 @@ public class Oauth2Controller {
 
 
     @GetMapping("/reqlogin/{code}")
-    public ResponseEntity<AccessTokenRefresh> loginreal(@PathVariable(name="access_token")String code,HttpServletResponse resp){
-
+    public ResponseEntity<AccessTokenRefresh> loginreal(@PathVariable(name="code")String code,HttpServletResponse resp){
+        log.info("-------------cocde----------:{}",code);
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
