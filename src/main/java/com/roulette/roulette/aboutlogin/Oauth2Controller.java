@@ -324,8 +324,11 @@ public class Oauth2Controller {
 
             int responseCode = con.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+
+                log.info("정상 호출 in get 메서드");
                 return readBody(con.getInputStream());
             } else { // 에러 발생
+                log.info("에러발생 in get 메서드");
                 return readBody(con.getErrorStream());
             }
         } catch (IOException e) {
