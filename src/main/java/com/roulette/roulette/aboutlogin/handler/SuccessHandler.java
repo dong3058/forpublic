@@ -48,7 +48,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
     }
 
     public void gettokenandresponse(Oauth2userprincipal oauth2userprincipal,Optional<Member> member,HttpServletResponse resp) throws IOException{
-        if(member.isPresent()){
+       /* if(member.isPresent()){
             Member m=member.get();
             JwtToken jwtToken=jwtUtill.genjwt(oauth2userprincipal.getAuthorities(),oauth2userprincipal.getUsername(),m.getMemberId());
             resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
@@ -66,7 +66,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
             ValueOperations<String, String> operations = redisTemplate.opsForValue();
             operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000,TimeUnit.SECONDS);
         }
-
+        */
     }
 
 

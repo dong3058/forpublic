@@ -40,19 +40,19 @@ public class Oauth2Config {
                 .authorizeHttpRequests((authorize)->{
                     authorize.requestMatchers("/logouts","/testdata").hasRole("user")
                             .requestMatchers("/api2").hasRole("admin")
-                            .requestMatchers("/login","/login/**","/","/styles.css","/test/**","/error/**","/googlelogin","/kakaologin","/api1").permitAll()
+                            .requestMatchers("/login","/login/**","/","/styles.css","/test/**","/error/**","/googlelogin","/kakaologin","/api1","/reqlogin/**").permitAll()
                             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .anyRequest().authenticated();
 
                 })
                 .sessionManagement((session)->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2Login((login)->login
+                /*.oauth2Login((login)->login
                         .loginPage("/login")
 
                         .userInfoEndpoint(c->c.userService(customOatuh2Service))
                         .successHandler(sucessHandler)
                         .failureHandler(failHandler)
-                )
+                )*/
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c->c.authenticationEntryPoint(entryPointHandler)
                         .accessDeniedHandler(authenHandler))

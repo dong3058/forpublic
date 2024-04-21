@@ -33,7 +33,49 @@ public class JwtUtill {
 
 
 
-    public JwtToken genjwt(Collection< ? extends GrantedAuthority> auth, String username, Long id){
+    public JwtToken genjwt(String username,Long id){
+
+        Random random=new Random();
+        int int_value=random.ints().limit(3).sum();
+
+        //String claim=auth.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+
+        String claim="user";
+        String accesstokne= Jwts.builder()
+                .claim("auth",claim)
+                .claim("user_id",id)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+expiration+3000))
+                .signWith(SignatureAlgorithm.HS256,key)
+                .compact();
+
+        String refreshtoken=Jwts
+                .builder()
+                .setSubject(username)
+                .claim("user_id",id)
+                .claim("randkey",int_value)
+                .setExpiration(new Date(System.currentTimeMillis()+10000))
+                .signWith(SignatureAlgorithm.HS256,key)
+                .compact();
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        operations.set(accesstokne,refreshtoken,12, TimeUnit.SECONDS);
+        return JwtToken.builder()
+                .accesstoken(accesstokne)
+                .refreshtoken(refreshtoken)
+                .grantType("Bearer")
+                .build();
+
+
+    }
+
+
+
+
+
+
+
+   /* public JwtToken genjwt(Collection< ? extends GrantedAuthority> auth, String username, Long id){
 
         Random random=new Random();
         int int_value=random.ints().limit(3).sum();
@@ -65,7 +107,7 @@ public class JwtUtill {
                 .build();
 
 
-    }
+    }*/
     public Authentication getauthforrefresh(String token) {
         Claims claims = getclaims(token);
 
