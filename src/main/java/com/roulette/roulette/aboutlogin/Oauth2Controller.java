@@ -51,12 +51,10 @@ public class Oauth2Controller {
 
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String kakakoredirecturi;
-   // private String kakakoredirecturi="https://k9bceeba41403a.user-app.krampoline.com/login/oauth2/code/kakao";
 
 
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String tokenuri;
-
 
     @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String userinfouri;
@@ -86,29 +84,22 @@ public class Oauth2Controller {
         log.info("kakakoredirdct:{}",kakakoredirecturi);
         log.info("kakaoid:{}",kakaoclientid);
         RestTemplate rt = new RestTemplate();
-        //HttpHeaders headers = new HttpHeaders();
-
-
-
 
 
         String proxyHost = "krmp-proxy.9rum.cc";
         int proxyPort = 3128;
 
-        // RestTemplate을 생성합니다.
-        //RestTemplate restTemplate = new RestTemplate();
 
-        // SimpleClientHttpRequestFactory를 생성합니다.
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 
-        // 프록시 설정을 합니다.
+
         Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
         requestFactory.setProxy(proxy);
 
-        // RestTemplate에 설정합니다.
+
         rt.setRequestFactory(requestFactory);
 
-        // HTTP 요청을 보냅니다.
+
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> accessTokenParams = accessTokenParams("authorization_code",kakaoclientid,code,kakakoredirecturi);
@@ -124,32 +115,17 @@ public class Oauth2Controller {
 
 
 
-
-
-
-
-
-        /*headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-        MultiValueMap<String, String> accessTokenParams = accessTokenParams("authorization_code",kakaoclientid,code,kakakoredirecturi);
-        HttpEntity<MultiValueMap<String, String>> accessTokenRequest = new HttpEntity<>(accessTokenParams, headers);
-        ResponseEntity<String> accessTokenResponse = rt.exchange(
-                tokenuri,
-                HttpMethod.POST,
-                accessTokenRequest,
-                String.class);*/
-
         try {
-
 
             log.info("try");
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(accessTokenResponse.getBody());
-            //session.setAttribute("Authorization", jsonObject.get("access_token"));
+
             String header = "Bearer " + jsonObject.get("access_token");
             System.out.println("header = " + header);
             Map<String, String> requestHeaders = new HashMap<>();
             requestHeaders.put("Authorization", header);
-            //String responseBody = get(userinfouri, requestHeaders);
+
 
             String responseBody=getproxy2(userinfouri,requestHeaders,header);
 
@@ -175,16 +151,6 @@ public class Oauth2Controller {
             return new ResponseEntity<>(new AccessTokenRefresh(token,"400","/"),HttpStatus.BAD_REQUEST);
 
 
-
-            /*(CustomUserDetail customUserDetail=new CustomUserDetail(new Kakaouserdata(userName,email));
-
-
-            User kakaoUser = new UserRequest("social_" + loginId, encode.encode("카카오"), userName, email).kakaoOAuthToEntity();
-            if (userRepository.existsByLoginId(kakaoUser.getLoginId()) == false) {
-                userRepository.save(kakaoUser);
-            }
-            String access_token = tokenProvider.create(new PrincipalDetails(kakaoUser));
-            res.setHeader("Authorization", "Bearer "+access_token);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -200,11 +166,9 @@ public class Oauth2Controller {
             log.info("member:{}",member.get().getMemberId());
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
             log.info("jwtoken:{}",jwtToken.getAccesstoken());
-            //resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
+
             log.info("---------------start------------");
-            //ValueOperations<String, String> operations = redisTemplate.opsForValue();
-            //log.info("aboutoperations:{}",operations);
-            //operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000, TimeUnit.SECONDS);
+
             return jwtToken.getAccesstoken();
         }
         else{
@@ -213,17 +177,13 @@ public class Oauth2Controller {
             log.info("memberid:{}",id);
             JwtToken jwtToken=jwtUtill.genjwt(username,id);
             log.info("jwtoken:{}",jwtToken.getAccesstoken());
-            //resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
+
             log.info("---------------start------------");
-           // ValueOperations<String, String> operations = redisTemplate.opsForValue();
-            //log.info("aboutoperations:{}",operations);
-            //operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000,TimeUnit.SECONDS);
+
             return jwtToken.getAccesstoken();
         }
 
     }
-
-
 
 
 
@@ -242,7 +202,7 @@ public class Oauth2Controller {
 
 
 
-    @GetMapping("/kakaologin")
+    /*@GetMapping("/kakaologin")
     public void kakaologin(HttpServletResponse resp)throws IOException {
         log.info("kakakologin check");
         resp.sendRedirect("/oauth2/authorization/kakao");
@@ -263,7 +223,7 @@ public class Oauth2Controller {
         log.info("kakaoredirecturl:{}",kakakoredirecturi);
         log.info("kakaoid:{}",kakaoclientid);
         return "api1";
-    }
+    }*/
 
     @GetMapping("/logouts")
     @ResponseBody
@@ -283,41 +243,10 @@ public class Oauth2Controller {
     }
 
 
-    @PostMapping("/testdata")
-    @ResponseBody
-    public ResponseEntity<Member> dataetest(HttpServletRequest req){
-        String access_token=req.getHeader("Authorization");
-        Claims claims=jwtUtill.getclaims(access_token.substring(7));
-        log.info("claims:{}",claims.getSubject());
-        log.info("access+token:{}",access_token);
-        Optional<Member> member=memberService.findmemberbyemail((String) claims.getSubject());
-        return new ResponseEntity<>(member.get(),HttpStatus.OK);
-    }
-
-    @GetMapping("/api2")
-    @ResponseBody
-    public String api2(){
-        return "api2";
-    }
 
 
 
-    @GetMapping("/login")
-    public String login(){
 
-        return "login";
-    }
-    @GetMapping("/error")
-    @ResponseBody
-    public String error(){
-        return "Error발생";
-    }
-    @GetMapping("/")
-    public String home(HttpServletRequest req)
-    {
-        log.info("req:{}",req.getHeader("Authorization"));
-        return "home";
-    }
     private static String readBody(InputStream body) {
         InputStreamReader streamReader = new InputStreamReader(body);
 
@@ -375,7 +304,6 @@ public class Oauth2Controller {
             con.disconnect();
         }
     }
-
     private static HttpURLConnection connect2(String apiUrl) {
          String PROXY_HOST = "krmp-proxy.9rum.cc";
          int PROXY_PORT = 3128;
@@ -393,104 +321,6 @@ public class Oauth2Controller {
     }
 
 
-
-    /*private static String getproxy(String apiUrl, Map<String, String> requestHeaders,String header)throws IOException {
-        // 프록시 설정
-        System.setProperty("http.proxyHost", "krmp-proxy.9rum.cc");
-        System.setProperty("http.proxyPort", "3128");
-
-        HttpURLConnection con = connect(apiUrl);
-        log.info("con객체 데이터:{}",con.getResponseCode());
-        try {
-            log.info("try in get");
-            con.setRequestMethod("GET");
-            log.info("con.setrequestmethod");
-            for (Map.Entry<String, String> headers : requestHeaders.entrySet()) {
-                log.info("get메서드 중간의 for문");
-                log.info("값체크con:{}", con);
-                log.info("헤더값 체크 :{}  value:{}",headers.getKey(),headers.getValue());
-                con.setRequestProperty(headers.getKey(), headers.getValue());
-
-                log.info("값체크:{}", con.getRequestProperties());
-                log.info("값체크 22:{}",con.getRequestProperty("Authorization"));
-            }
-
-            con.setRequestProperty("Authorization",header);
-
-            log.info("토큰값:{}",header);
-            log.info("갑체크333:{}",con.getHeaderField("Authorization"));
-            log.info("conreqsponsecode:{}",con.getResponseCode());
-            int responseCode = con.getResponseCode();
-            log.info("responsecode:{}", responseCode);
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-
-                log.info("정상 호출 in get 메서드");
-                return readBody(con.getInputStream());
-            } else { // 에러 발생
-                log.info("에러발생 in get 메서드");
-                return readBody(con.getErrorStream());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("API 요청과 응답 실패", e);
-        } finally {
-            con.disconnect();
-        }
-    }*/
-
-
-
-
-
-
-
-    /*private static String get(String apiUrl, Map<String, String> requestHeaders) {
-        HttpURLConnection con = connect(apiUrl);
-        try {
-
-
-            log.info("try in get");
-            con.setRequestMethod("GET");
-            log.info("con.setrequestmethod");
-            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
-                log.info("get메서드 중간의 for문");
-                log.info("값체크con:{}",con);
-                con.setRequestProperty(header.getKey(), header.getValue());
-
-                log.info("값체크:{}",con.getRequestProperties());
-            }
-
-
-            int responseCode = con.getResponseCode();
-            log.info("responsecode:{}",responseCode);
-            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-
-                log.info("정상 호출 in get 메서드");
-                return readBody(con.getInputStream());
-            } else { // 에러 발생
-                log.info("에러발생 in get 메서드");
-                return readBody(con.getErrorStream());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("API 요청과 응답 실패", e);
-        } finally {
-            con.disconnect();
-        }
-    }
-
-    private static HttpURLConnection connect(String apiUrl) {
-        try {
-
-
-            log.info("url try");
-            URL url = new URL(apiUrl);
-            log.info("url:{}",url.openConnection());
-            return (HttpURLConnection) url.openConnection();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
-        } catch (IOException e) {
-            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
-        }
-    }*/
 
 
 
