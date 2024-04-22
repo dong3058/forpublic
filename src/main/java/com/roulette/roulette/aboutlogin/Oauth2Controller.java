@@ -166,7 +166,7 @@ public class Oauth2Controller {
 
 
             log.info("hello world");
-            log.info("---------param data:{}  {}   {}  {}  {}",email,userName,member.isPresent(),resp);
+            log.info("---------param data:{}  {}   {}  {}  ",email,userName,member.isPresent(),resp);
             String token = gettokenandresponse(email, userName, member, resp);
 
 
@@ -197,7 +197,9 @@ public class Oauth2Controller {
     public String gettokenandresponse(String email,String username,Optional<Member> member, HttpServletResponse resp) throws IOException{
         if(member.isPresent()){
             Member m=member.get();
+            log.info("member:{}",member.get().getMemberId());
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
+            log.info("jwtoken:{}",jwtToken.getAccesstoken());
             //resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
             log.info("---------------start------------");
             ValueOperations<String, String> operations = redisTemplate.opsForValue();
@@ -208,7 +210,9 @@ public class Oauth2Controller {
         else{
 
             Long id=memberService.membersave(new MemberDto(email,username));
+            log.info("memberid:{}",id);
             JwtToken jwtToken=jwtUtill.genjwt(username,id);
+            log.info("jwtoken:{}",jwtToken.getAccesstoken());
             //resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
             log.info("---------------start------------");
             ValueOperations<String, String> operations = redisTemplate.opsForValue();
