@@ -26,10 +26,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -77,10 +74,10 @@ public class Oauth2Controller {
     }
 
 
-    @GetMapping("/reqlogin/{code}")
+    @PostMapping("/reqlogin")
     @ResponseBody
-    public ResponseEntity<AccessTokenRefresh> loginreal(@PathVariable(name="code")String code,HttpServletResponse resp){
-        log.info("-------------cocde----------:{}",code);
+    public ResponseEntity<AccessTokenRefresh> loginreal(@RequestBody Access_Code accessCode, HttpServletResponse resp){
+        log.info("-------------access_code---------:{}",accessCode.getAccess_code());
         log.info("kakakoredirdct:{}",kakakoredirecturi);
         log.info("kakaoid:{}",kakaoclientid);
         RestTemplate rt = new RestTemplate();
@@ -98,7 +95,7 @@ public class Oauth2Controller {
 
 
         rt.setRequestFactory(requestFactory);
-
+        String code="Bearer "+accessCode.getAccess_code();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
