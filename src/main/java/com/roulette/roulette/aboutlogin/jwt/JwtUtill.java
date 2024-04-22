@@ -41,7 +41,7 @@ public class JwtUtill {
 
         //String claim=auth.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
 
-        String claim="user";
+        String claim="ROLE_user";
         String accesstokne= Jwts.builder()
                 .claim("auth",claim)
                 .claim("user_id",id)

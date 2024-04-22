@@ -39,9 +39,6 @@ public class JwtFilter extends GenericFilterBean {
 
         try{if(token!=null&&jwtUtill.validatetoken(token)){
 
-            if(((HttpServletRequest) servletRequest).getRequestURI().equals("/login")){
-                throw new AlReadyLoginError("재로그인 에러");
-            }
             Boolean tokenchec=jwtUtill.validatetoken(token);
             Authentication authentication= jwtUtill.getauth(token);
 
