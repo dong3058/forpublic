@@ -149,8 +149,12 @@ public class Oauth2Controller {
 
 
         } catch (Exception e) {
+            log.info("에러가터지면안된다 오지말아다오.");
             e.printStackTrace();
         }
+
+
+        log.info("여기는 오면안되낟 그러지말아다오");
         return null;
 
     }
