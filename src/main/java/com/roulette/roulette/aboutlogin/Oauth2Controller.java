@@ -95,7 +95,7 @@ public class Oauth2Controller {
 
 
         rt.setRequestFactory(requestFactory);
-        String code="Bearer "+accessCode.getAccess_code();
+        String code=accessCode.getAccess_code();
         log.info("-----------check1-------------");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
