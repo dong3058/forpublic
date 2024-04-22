@@ -81,7 +81,7 @@ public class ExceptionHandling {
     @ExceptionHandler({SecurityException.class, MalformedJwtException.class, UnsupportedJwtException.class, EtcError.class})
     public void authexception(HttpServletRequest req,HttpServletResponse resp,Exception e)throws IOException{
 
-
+        log.info("exceotuibgabdker 작동함!!!!!!!!!:{}",req.getRequestURI());
         resp.sendRedirect("/test/no/home");
 
     }
