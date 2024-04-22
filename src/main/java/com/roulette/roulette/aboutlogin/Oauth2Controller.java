@@ -336,6 +336,7 @@ public class Oauth2Controller {
 
             log.info("토큰값:{}",header);
             log.info("갑체크333:{}",con.getRequestProperty("Authorization"));
+            log.info("conreqsponsecode:{}",con.getResponseCode());
             int responseCode = con.getResponseCode();
             log.info("responsecode:{}", responseCode);
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
