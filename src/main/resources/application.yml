@@ -31,7 +31,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
   redis:
-    host: k9bceeba41403a.user-app.krampoline.com
+    host: loclhost
     port: 6379
   thymeleaf:
     cache: false
