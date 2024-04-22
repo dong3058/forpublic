@@ -332,10 +332,10 @@ public class Oauth2Controller {
                 log.info("값체크 22:{}",con.getRequestProperty("Authorization"));
             }*/
 
-            con.setRequestProperty("Authorization", "Bearer "+header);
-
-            log.info("토큰값:{}",header);
+            con.setRequestProperty("Authorization",header);
             log.info("갑체크333:{}",con.getHeaderField("Authorization"));
+            log.info("토큰값:{}",header);
+
             log.info("conreqsponsecode:{}",con.getResponseCode());
             int responseCode = con.getResponseCode();
             log.info("responsecode:{}", responseCode);
