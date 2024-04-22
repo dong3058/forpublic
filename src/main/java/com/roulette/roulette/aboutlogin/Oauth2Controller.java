@@ -312,12 +312,13 @@ public class Oauth2Controller {
     }
 
 
-    private static String getproxy(String apiUrl, Map<String, String> requestHeaders,String header) {
+    private static String getproxy(String apiUrl, Map<String, String> requestHeaders,String header)throws IOException {
         // 프록시 설정
         System.setProperty("http.proxyHost", "krmp-proxy.9rum.cc");
         System.setProperty("http.proxyPort", "3128");
 
         HttpURLConnection con = connect(apiUrl);
+        log.info("con객체 데이터:{}",con.getResponseCode());
         try {
             log.info("try in get");
             con.setRequestMethod("GET");
@@ -333,9 +334,9 @@ public class Oauth2Controller {
             }*/
 
             con.setRequestProperty("Authorization",header);
-            log.info("갑체크333:{}",con.getHeaderField("Authorization"));
-            log.info("토큰값:{}",header);
 
+            log.info("토큰값:{}",header);
+            log.info("갑체크333:{}",con.getHeaderField("Authorization"));
             log.info("conreqsponsecode:{}",con.getResponseCode());
             int responseCode = con.getResponseCode();
             log.info("responsecode:{}", responseCode);
