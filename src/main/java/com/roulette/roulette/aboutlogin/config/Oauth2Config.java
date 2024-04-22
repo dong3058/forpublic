@@ -51,7 +51,7 @@ public class Oauth2Config {
                 .authorizeHttpRequests((authorize)->{
                     authorize.requestMatchers("/logouts").hasRole("user")
                             .requestMatchers("/api2").hasRole("admin")
-                            .requestMatchers("/krmp-proxy.9rum.cc/**","/login/**","/","/test/**","/reqlogin/**",tokenuri,userinfouri).permitAll()
+                            .requestMatchers("/krmp-proxy.9rum.cc/**","/login/**","/","/test/**","/reqlogin/**",tokenuri,userinfouri,"http://krmp-proxy.9rum.cc:3128").permitAll()
                             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .anyRequest().authenticated();
 
