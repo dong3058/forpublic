@@ -165,7 +165,7 @@ public class Oauth2Controller {
             Optional<Member> member=memberService.findmemberbyemail(email);
 
 
-
+            log.info("hello world");
 
             String token = gettokenandresponse(email, userName, member, resp);
 
