@@ -114,7 +114,7 @@ public class Oauth2Controller {
 
         try {
 
-            log.info("try");
+
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(accessTokenResponse.getBody());
 
@@ -138,8 +138,8 @@ public class Oauth2Controller {
             Optional<Member> member=memberService.findmemberbyemail(email);
 
 
-            log.info("hello world");
-            log.info("---------param data:{}  {}   {}  {}  ",email,userName,member.isPresent(),resp);
+
+
             String token = gettokenandresponse(email, userName, member, resp);
 
 
@@ -160,22 +160,22 @@ public class Oauth2Controller {
     public String gettokenandresponse(String email,String username,Optional<Member> member, HttpServletResponse resp) throws IOException{
         if(member.isPresent()){
             Member m=member.get();
-            log.info("member:{}",member.get().getMemberId());
-            JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
-            log.info("jwtoken:{}",jwtToken.getAccesstoken());
 
-            log.info("---------------start------------");
+            JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
+
+
+
 
             return jwtToken.getAccesstoken();
         }
         else{
 
             Long id=memberService.membersave(new MemberDto(email,username));
-            log.info("memberid:{}",id);
-            JwtToken jwtToken=jwtUtill.genjwt(username,id);
-            log.info("jwtoken:{}",jwtToken.getAccesstoken());
 
-            log.info("---------------start------------");
+            JwtToken jwtToken=jwtUtill.genjwt(username,id);
+
+
+
 
             return jwtToken.getAccesstoken();
         }
@@ -284,15 +284,15 @@ public class Oauth2Controller {
 
             con.setRequestProperty("Authorization", header);
 
-            log.info("값체크 con:{}",con.getHeaderField("Authorization"));
+
 
             int responseCode = con.getResponseCode();
-            log.info("responsecode:{}", responseCode);
+
             if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
-                log.info("정상 호출 in get 메서드");
+
                 return readBody(con.getInputStream());
             } else { // 에러 발생
-                log.info("에러발생 in get 메서드");
+
                 return readBody(con.getErrorStream());
             }
         } catch (IOException e) {
@@ -305,9 +305,9 @@ public class Oauth2Controller {
          String PROXY_HOST = "krmp-proxy.9rum.cc";
          int PROXY_PORT = 3128;
         try {
-            log.info("url try");
+
             URL url = new URL(apiUrl);
-            log.info("url:{}", url.openConnection(Proxy.NO_PROXY));
+
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             return (HttpURLConnection) url.openConnection(proxy);
         } catch (MalformedURLException e) {
