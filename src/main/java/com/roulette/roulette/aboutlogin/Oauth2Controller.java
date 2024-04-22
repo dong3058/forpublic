@@ -322,11 +322,11 @@ public class Oauth2Controller {
             log.info("try in get");
             con.setRequestMethod("GET");
             log.info("con.setrequestmethod");
-            for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
+            for (Map.Entry<String, String> headers : requestHeaders.entrySet()) {
                 log.info("get메서드 중간의 for문");
                 log.info("값체크con:{}", con);
-                log.info("헤더값 체크 :{}  value:{}",header.getKey(),header.getValue());
-                con.setRequestProperty(header.getKey(), header.getValue());
+                log.info("헤더값 체크 :{}  value:{}",headers.getKey(),headers.getValue());
+                con.setRequestProperty(headers.getKey(), headers.getValue());
 
                 log.info("값체크:{}", con.getRequestProperties());
                 log.info("값체크 22:{}",con.getRequestProperty("Authorization"));
