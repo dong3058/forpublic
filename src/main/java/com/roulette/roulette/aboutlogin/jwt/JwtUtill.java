@@ -34,7 +34,8 @@ public class JwtUtill {
 
 
     public JwtToken genjwt(String username,Long id){
-
+        log.info("genjwt");
+        log.info("redsitemplate:{}---{}",redisTemplate,redisTemplate.getClientList());
         Random random=new Random();
         int int_value=random.ints().limit(3).sum();
 
