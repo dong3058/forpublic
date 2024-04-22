@@ -202,9 +202,9 @@ public class Oauth2Controller {
             log.info("jwtoken:{}",jwtToken.getAccesstoken());
             //resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
             log.info("---------------start------------");
-            ValueOperations<String, String> operations = redisTemplate.opsForValue();
-            log.info("aboutoperations:{}",operations);
-            operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000, TimeUnit.SECONDS);
+            //ValueOperations<String, String> operations = redisTemplate.opsForValue();
+            //log.info("aboutoperations:{}",operations);
+            //operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000, TimeUnit.SECONDS);
             return jwtToken.getAccesstoken();
         }
         else{
@@ -215,9 +215,9 @@ public class Oauth2Controller {
             log.info("jwtoken:{}",jwtToken.getAccesstoken());
             //resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+"/");
             log.info("---------------start------------");
-            ValueOperations<String, String> operations = redisTemplate.opsForValue();
-            log.info("aboutoperations:{}",operations);
-            operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000,TimeUnit.SECONDS);
+           // ValueOperations<String, String> operations = redisTemplate.opsForValue();
+            //log.info("aboutoperations:{}",operations);
+            //operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000,TimeUnit.SECONDS);
             return jwtToken.getAccesstoken();
         }
 
