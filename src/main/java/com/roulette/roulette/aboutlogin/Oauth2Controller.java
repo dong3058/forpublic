@@ -145,7 +145,7 @@ public class Oauth2Controller {
 
             log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token);
 
-            return new ResponseEntity<>(new AccessTokenRefresh(token,"400","/", jwtUtill.getidfromtoken(token)),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AccessTokenRefresh(token,"200","/", jwtUtill.getidfromtoken(token)),HttpStatus.OK);
 
 
         } catch (Exception e) {
