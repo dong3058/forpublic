@@ -166,7 +166,7 @@ public class Oauth2Controller {
 
 
             log.info("hello world");
-            log.info("param data:{}  {}   {}  {}  {}",email,userName,member.isPresent(),resp);
+            log.info("---------param data:{}  {}   {}  {}  {}",email,userName,member.isPresent(),resp);
             String token = gettokenandresponse(email, userName, member, resp);
 
 
