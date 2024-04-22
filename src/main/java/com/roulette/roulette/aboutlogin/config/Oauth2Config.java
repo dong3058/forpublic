@@ -17,6 +17,9 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -46,12 +49,12 @@ public class Oauth2Config {
         return httpSecurity
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(c->c.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize)->{
-                    authorize.requestMatchers("/logouts","/api1").hasRole("user")
+                    authorize.requestMatchers("/logouts","/api1","/code/**","/mypage/**").hasRole("user")
 
-                            .requestMatchers("/login/**","/","/test/**","/reqlogin/**",tokenuri,userinfouri,"http://krmp-proxy.9rum.cc:3128","http://krmp-proxy.9rum.cc:3128/**").permitAll()
+                            .requestMatchers("/login/**","/","/test/**","/reqlogin/**",tokenuri,userinfouri,"http://krmp-proxy.9rum.cc:3128/**","http://krmp-proxy.9rum.cc:3128/**").permitAll()
                             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .anyRequest().permitAll();
 
@@ -64,7 +67,7 @@ public class Oauth2Config {
                         .successHandler(sucessHandler)
                         .failureHandler(failHandler)
                 )*/
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c->c.authenticationEntryPoint(entryPointHandler)
                         .accessDeniedHandler(authenHandler))
 
@@ -74,6 +77,22 @@ public class Oauth2Config {
 
 
 
+    }
+
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }

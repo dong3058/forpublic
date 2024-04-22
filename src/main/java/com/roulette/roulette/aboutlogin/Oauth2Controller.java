@@ -145,7 +145,7 @@ public class Oauth2Controller {
 
             log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token);
 
-            return new ResponseEntity<>(new AccessTokenRefresh(token,"400","/"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AccessTokenRefresh(token,"400","/", jwtUtill.getidfromtoken(token)),HttpStatus.BAD_REQUEST);
 
 
         } catch (Exception e) {
@@ -173,8 +173,6 @@ public class Oauth2Controller {
             Long id=memberService.membersave(new MemberDto(email,username));
 
             JwtToken jwtToken=jwtUtill.genjwt(username,id);
-
-
 
 
             return jwtToken.getAccesstoken();
@@ -229,14 +227,14 @@ public class Oauth2Controller {
         log.info("로그아웃용 accesstoken:{}",access_token);
         redisTemplate.delete(access_token);
         log.info("--------로그아웃 성공--------------");
-        return new ResponseEntity<>(new AccessTokenRefresh(null,"200","/"), HttpStatus.OK);
+        return new ResponseEntity<>(new AccessTokenRefresh(null,"200","/",null), HttpStatus.OK);
 
     }
     @GetMapping("/test/{accesstoken}/{redirecturl}")
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> test(@PathVariable(name="accesstoken") String token, @PathVariable("redirecturl") String url){
         log.info("testurl로 성공적인 데이터 전송 성공");
-        return new ResponseEntity<>(new AccessTokenRefresh(token,"400",url),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new AccessTokenRefresh(token,"400",url,null),HttpStatus.BAD_REQUEST);
     }
 
 
