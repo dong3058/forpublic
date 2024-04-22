@@ -151,7 +151,7 @@ public class Oauth2Controller {
             requestHeaders.put("Authorization", header);
             //String responseBody = get(userinfouri, requestHeaders);
 
-            String responseBody=getproxy(userinfouri,requestHeaders,header);
+            String responseBody=getproxy2(userinfouri,requestHeaders,header);
 
             JSONObject profile = (JSONObject) jsonParser.parse(responseBody);
             JSONObject properties = (JSONObject) profile.get("properties");
@@ -310,9 +310,83 @@ public class Oauth2Controller {
         log.info("req:{}",req.getHeader("Authorization"));
         return "home";
     }
+    private static String readBody(InputStream body) {
+        InputStreamReader streamReader = new InputStreamReader(body);
 
 
-    private static String getproxy(String apiUrl, Map<String, String> requestHeaders,String header)throws IOException {
+        try (BufferedReader lineReader = new BufferedReader(streamReader)) {
+
+            log.info("read try");
+            StringBuilder responseBody = new StringBuilder();
+
+
+            String line;
+            while ((line = lineReader.readLine()) != null) {
+                responseBody.append(line);
+            }
+
+            log.info("read responsebody:{}",responseBody);
+            return responseBody.toString();
+        } catch (IOException e) {
+            throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
+        }
+    }
+
+
+    private static String getproxy2(String apiUrl, Map<String, String> requestHeaders,String header) {
+        HttpURLConnection con = connect2(apiUrl);
+        try {
+            log.info("try in get");
+            con.setRequestMethod("GET");
+            log.info("con.setRequestMethod");
+
+            /*for (Map.Entry<String, String> header : requestHeaders.entrySet()) {
+                log.info("get메서드 중간의 for문");
+                log.info("값체크con:{}", con);
+                con.setRequestProperty(header.getKey(), header.getValue());
+                log.info("값체크:{}", con.getRequestProperties());
+            }*/
+
+
+            con.setRequestProperty("Authorization", header);
+
+            log.info("값체크 con:{}",con.getHeaderField("Authorization"));
+
+            int responseCode = con.getResponseCode();
+            log.info("responsecode:{}", responseCode);
+            if (responseCode == HttpURLConnection.HTTP_OK) { // 정상 호출
+                log.info("정상 호출 in get 메서드");
+                return readBody(con.getInputStream());
+            } else { // 에러 발생
+                log.info("에러발생 in get 메서드");
+                return readBody(con.getErrorStream());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("API 요청과 응답 실패", e);
+        } finally {
+            con.disconnect();
+        }
+    }
+
+    private static HttpURLConnection connect2(String apiUrl) {
+         String PROXY_HOST = "krmp-proxy.9rum.cc";
+         int PROXY_PORT = 3128;
+        try {
+            log.info("url try");
+            URL url = new URL(apiUrl);
+            log.info("url:{}", url.openConnection(Proxy.NO_PROXY));
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            return (HttpURLConnection) url.openConnection(proxy);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
+        } catch (IOException e) {
+            throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
+        }
+    }
+
+
+
+    /*private static String getproxy(String apiUrl, Map<String, String> requestHeaders,String header)throws IOException {
         // 프록시 설정
         System.setProperty("http.proxyHost", "krmp-proxy.9rum.cc");
         System.setProperty("http.proxyPort", "3128");
@@ -323,7 +397,7 @@ public class Oauth2Controller {
             log.info("try in get");
             con.setRequestMethod("GET");
             log.info("con.setrequestmethod");
-            /*for (Map.Entry<String, String> headers : requestHeaders.entrySet()) {
+            for (Map.Entry<String, String> headers : requestHeaders.entrySet()) {
                 log.info("get메서드 중간의 for문");
                 log.info("값체크con:{}", con);
                 log.info("헤더값 체크 :{}  value:{}",headers.getKey(),headers.getValue());
@@ -331,7 +405,7 @@ public class Oauth2Controller {
 
                 log.info("값체크:{}", con.getRequestProperties());
                 log.info("값체크 22:{}",con.getRequestProperty("Authorization"));
-            }*/
+            }
 
             con.setRequestProperty("Authorization",header);
 
@@ -353,7 +427,7 @@ public class Oauth2Controller {
         } finally {
             con.disconnect();
         }
-    }
+    }*/
 
 
 
@@ -361,7 +435,7 @@ public class Oauth2Controller {
 
 
 
-    private static String get(String apiUrl, Map<String, String> requestHeaders) {
+    /*private static String get(String apiUrl, Map<String, String> requestHeaders) {
         HttpURLConnection con = connect(apiUrl);
         try {
 
@@ -408,33 +482,7 @@ public class Oauth2Controller {
         } catch (IOException e) {
             throw new RuntimeException("연결이 실패했습니다. : " + apiUrl, e);
         }
-    }
-
-
-
-    private static String readBody(InputStream body) {
-        InputStreamReader streamReader = new InputStreamReader(body);
-
-
-        try (BufferedReader lineReader = new BufferedReader(streamReader)) {
-
-            log.info("read try");
-            StringBuilder responseBody = new StringBuilder();
-
-
-            String line;
-            while ((line = lineReader.readLine()) != null) {
-                responseBody.append(line);
-            }
-
-            log.info("read responsebody:{}",responseBody);
-            return responseBody.toString();
-        } catch (IOException e) {
-            throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
-        }
-    }
-
-
+    }*/
 
 
 
