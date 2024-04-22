@@ -96,7 +96,7 @@ public class Oauth2Controller {
 
         rt.setRequestFactory(requestFactory);
         String code="Bearer "+accessCode.getAccess_code();
-
+        log.info("-----------check1-------------");
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         MultiValueMap<String, String> accessTokenParams = accessTokenParams("authorization_code",kakaoclientid,code,kakakoredirecturi);
@@ -107,7 +107,7 @@ public class Oauth2Controller {
                 accessTokenRequest,
                 String.class);
 
-
+        log.info("-----------check2-------------");
 
 
 
@@ -307,6 +307,7 @@ public class Oauth2Controller {
             URL url = new URL(apiUrl);
 
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            log.info("connect check-------------------");
             return (HttpURLConnection) url.openConnection(proxy);
         } catch (MalformedURLException e) {
             throw new RuntimeException("API URL이 잘못되었습니다. : " + apiUrl, e);
