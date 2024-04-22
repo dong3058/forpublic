@@ -216,14 +216,14 @@ public class Oauth2Controller {
         log.info("google login check");
         resp.sendRedirect("/oauth2/authorization/google");
     }
-
+*/
     @GetMapping("/api1")
     @ResponseBody
     public String api1(){
         log.info("kakaoredirecturl:{}",kakakoredirecturi);
         log.info("kakaoid:{}",kakaoclientid);
         return "api1";
-    }*/
+    }
 
     @GetMapping("/logouts")
     @ResponseBody
