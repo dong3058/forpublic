@@ -20,11 +20,11 @@ public class PostController {
 
     @GetMapping("/list/{page}")
     public Page<PostListDto> getPostList(@PathVariable int page) {
-        return postService.getRecentPosts(page, 8);
+        return postService.getRecentPosts(page, 10);
     }
 
     @GetMapping("/{post_id}")
-    public PostDto getPost(@PathVariable Long post_id) {
+    public PostAndReplyListDto getPost(@PathVariable Long post_id) {
         return postService.getPostById(post_id).get(); //Optional로 주기 때문에
 
     }

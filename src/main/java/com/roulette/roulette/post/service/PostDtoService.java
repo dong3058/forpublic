@@ -1,10 +1,12 @@
 package com.roulette.roulette.post.service;
 
+import com.roulette.roulette.dto.post.PostAndReplyListDto;
 import com.roulette.roulette.entity.Image;
 import com.roulette.roulette.entity.Post;
-import com.roulette.roulette.dto.post.PostDto;
 import com.roulette.roulette.dto.post.PostListDto;
+import com.roulette.roulette.entity.Reply;
 import com.roulette.roulette.post.repository.ImageRepository;
+import com.roulette.roulette.post.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,9 +24,15 @@ public class PostDtoService {
     @Autowired
     private ImageRepository imageRepository;
 
-    public PostDto convertToPostDto(Post post) {
+    @Autowired
+    private ReplyRepository replyRepository;
+
+    public PostAndReplyListDto convertToPostDto(Post post) {
         String imgBase64 = null;
         Optional<Image> optionalImage = imageRepository.findByPostImg_Post(post);
+        //이미지 찾는 로직
+        List<Reply> replies = replyRepository.findByPostPostId(post.getPostId());
+        //reply 찾는 로직
         if (optionalImage.isPresent()) {
             try {
                 Path imagePath = Paths.get(optionalImage.get().getImgUrl());
@@ -33,11 +42,15 @@ public class PostDtoService {
             }
         }
 
-        return new PostDto(
+        return new PostAndReplyListDto(
                 post.getPostId(),
+                post.getMember().getName(),
                 post.getMember().getMemberId(),
+                post.getTitle(),
                 post.getContents(),
-                imgBase64
+                imgBase64,
+                post.getCreateTime(),
+                replies
         );
     }
 
@@ -55,9 +68,10 @@ public class PostDtoService {
 
         return new PostListDto(
                 post.getMember().getMemberId(),
+                post.getMember().getName(),
                 post.getPostId(),
                 post.getTitle(),
-                post.getCreateTime().toString(),
+                post.getCreateTime(),
                 imgBase64
         );
     }
