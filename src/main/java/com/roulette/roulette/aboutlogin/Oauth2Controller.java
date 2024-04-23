@@ -139,9 +139,9 @@ public class Oauth2Controller {
             String email = (String) kakao_account.get("email");
             String userName = (String) properties.get("nickname");
 
-            //Optional<Member> member=memberService.findmemberbyemail(email);
+            Optional<Member> member=memberService.findmemberbyemail(email);
 
-            Optional<Member> member=memberJpaRepository.findById(loginId);
+            //Optional<Member> member=memberJpaRepository.findById(loginId);
 
 
             List<Object> token_id_list = gettokenandresponse(email, userName, member, resp,req);
