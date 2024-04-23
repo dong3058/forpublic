@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-@ControllerAdvice(basePackages = "src.main.java.com.roulette.roulette.aboutlogin")
+@ControllerAdvice(basePackages = "com.roulette.roulette.aboutlogin")
 @Slf4j
 public class ExceptionHandling {
     private JwtUtill jwtUtill;
