@@ -204,9 +204,6 @@ public class Oauth2Controller {
 
 
 
-
-
-
     public MultiValueMap<String, String> accessTokenParams(String grantType, String clientId,String code,String redirect_uri) {
         MultiValueMap<String, String> accessTokenParams = new LinkedMultiValueMap<>();
         accessTokenParams.add("grant_type", grantType);
@@ -215,8 +212,6 @@ public class Oauth2Controller {
         accessTokenParams.add("redirect_uri", redirect_uri);
         return accessTokenParams;
     }
-
-
 
 
     /*@GetMapping("/kakaologin")

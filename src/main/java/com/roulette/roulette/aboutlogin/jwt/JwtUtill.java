@@ -157,7 +157,7 @@ public class JwtUtill {
         //String auth=(String)claims.get("auth");
         String username=claims.getSubject();
         List<Object> datalist=new ArrayList<>();
-        datalist.add(x);
+        datalist.add(x.longValue());
         datalist.add(username);
         return datalist;
     }
@@ -165,8 +165,8 @@ public class JwtUtill {
 
     public Long getidfromtoken(String token){
         Claims claims=getclaims(token);
-        Long x=(Long)claims.get("user_id");
-        return x;
+        Integer x=(Integer)claims.get("user_id");
+        return x.longValue();
     }
 
 
