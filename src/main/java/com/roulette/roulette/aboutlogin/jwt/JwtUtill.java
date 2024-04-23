@@ -47,7 +47,7 @@ public class JwtUtill {
                 .claim("user_id",id)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+expiration+3000000))
+                .setExpiration(new Date(System.currentTimeMillis()+expiration+1))
                 .signWith(SignatureAlgorithm.HS256,key)
                 .compact();
 
@@ -56,11 +56,11 @@ public class JwtUtill {
                 .setSubject(username)
                 .claim("user_id",id)
                 .claim("randkey",int_value)
-                .setExpiration(new Date(System.currentTimeMillis()+100000000))
+                .setExpiration(new Date(System.currentTimeMillis()+300000))
                 .signWith(SignatureAlgorithm.HS256,key)
                 .compact();
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
-        operations.set(accesstokne,refreshtoken,3000, TimeUnit.SECONDS);
+        operations.set(accesstokne,refreshtoken,300, TimeUnit.SECONDS);
         return JwtToken.builder()
                 .accesstoken(accesstokne)
                 .refreshtoken(refreshtoken)
