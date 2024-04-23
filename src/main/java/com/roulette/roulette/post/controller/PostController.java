@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/code")
+@RequestMapping("/post")
 public class PostController {
 
     @Autowired
@@ -20,10 +20,10 @@ public class PostController {
 
     @GetMapping("/list/{page}")
     public Page<PostListDto> getPostList(@PathVariable int page) {
-        return postService.getRecentPosts(page, 10);
+        return postService.getRecentPosts(page, 8);
     }
 
-    @GetMapping("/post/{post_id}")
+    @GetMapping("/{post_id}")
     public PostDto getPost(@PathVariable Long post_id) {
         return postService.getPostById(post_id).get(); //Optional로 주기 때문에
 

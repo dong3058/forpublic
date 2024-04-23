@@ -11,5 +11,5 @@ public class PostDto {
     private Long postId;
     private Long memberId;
     private String content;
-    private String imgSrc;
+    private String imgBase64;
 }

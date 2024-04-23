@@ -7,11 +7,12 @@ import org.springframework.boot.CommandLineRunner;
 import com.roulette.roulette.entity.Conversation;
 import com.roulette.roulette.entity.Member;
 import com.roulette.roulette.entity.Message;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
-//@Component
+@Component
 public class ChatAppRunner implements CommandLineRunner {
 
     private final ConversationRepository conversationRepository;

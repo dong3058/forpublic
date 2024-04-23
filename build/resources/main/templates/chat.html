@@ -7,12 +7,31 @@
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script th:src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
     <script th:src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <style>
+        .header {
+            background-color: #FFE6E6;
+            padding: 10px;
+            text-align: left;
+        }
+        .home-button {
+            background-image: url('/images/home.png');
+            background-size: cover;
+            width: 50px;
+            height: 50px;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
+        }
+    </style>
 </head>
 <body>
 
+<div class="header">
+    <button class="home-button" onclick="window.location.href='YOUR_URL_HERE';"></button>
+</div>
+
 <div class="chat-container">
     <div class="chat-sidebar">
-        <!-- 사용자의 대화 목록 -->
         <div class="chat-list">
             <ul>
                 <li th:each="conversation : ${conversations}"
@@ -24,12 +43,10 @@
         </div>
     </div>
     <div class="chat-main">
-        <!-- 대화 내용 -->
         <div class="chat-header">
             <h3 id="conversationName">Select a chat</h3>
         </div>
         <div class="chat-messages" id="chatWindow">
-            <!-- 메시지들이 여기에 표시됩니다. -->
         </div>
         <div class="chat-footer">
             <input type="text" id="messageInput" placeholder="Type a message...">
@@ -39,7 +56,6 @@
 </div>
 
 <script th:inline="javascript">
-    /*<![CDATA[*/
     var stompClient = null;
     var selectedConversationId = null;
 
@@ -47,7 +63,7 @@
         var convoId = element.getAttribute('data-convo-id');
         selectedConversationId = convoId;
         $('#conversationName').text(element.textContent);
-        $('#chatWindow').empty(); // 이전 대화 내용을 지웁니다.
+        $('#chatWindow').empty();
 
         if(stompClient) {
             stompClient.disconnect();
@@ -82,7 +98,6 @@
     function showMessage(message) {
         $('#chatWindow').append('<div class="message">' + message.content + '</div>');
     }
-    /*]]>*/
 </script>
 
 </body>

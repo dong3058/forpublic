@@ -87,10 +87,6 @@ public class PostService {
         if (requestDto.getImage() != null) {
             Image image = storeImage(requestDto.getImage(), post);
             imageRepository.save(image);
-
-            PostImage postImage = new PostImage();
-            postImage.setPost(post); // 이미 저장된 Post를 참조
-            postImageRepository.save(postImage);
         }
 
         return post.getPostId();
@@ -98,7 +94,7 @@ public class PostService {
 
     private Image storeImage(MultipartFile file, Post post) throws IOException {
 
-        String fileName = file.getOriginalFilename(); // 파일 이름 가져오기
+        String fileName = "post_" + post.getPostId() + "_" + file.getOriginalFilename();; // 파일 이름 가져오기
         Path targetLocation = Paths.get(uploadDir).resolve(fileName);
 
         // 디렉토리가 없으면 생성
