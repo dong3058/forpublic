@@ -11,12 +11,14 @@ import com.roulette.roulette.post.repository.ImageRepository;
 import com.roulette.roulette.aboutlogin.repository.MemberJpaRepository;
 import com.roulette.roulette.post.repository.PostImageRepository;
 import com.roulette.roulette.post.repository.PostRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Slf4j
 public class PostService {
 
     @Autowired
@@ -85,8 +88,13 @@ public class PostService {
 
         // Image와 PostImage 처리
         if (requestDto.getImage() != null) {
+            log.info("이미지 저장 시작");
             Image image = storeImage(requestDto.getImage(), post);
+            log.info("이미지 저장 완료");
             imageRepository.save(image);
+        }
+        else {
+            log.info("request image : {}",requestDto.getImage() );
         }
 
         return post.getPostId();
@@ -97,21 +105,28 @@ public class PostService {
         String fileName = "post_" + post.getPostId() + "_" + file.getOriginalFilename();; // 파일 이름 가져오기
         Path targetLocation = Paths.get(uploadDir).resolve(fileName);
 
+        log.info("targetLocation {}", targetLocation);
+        log.info("이미지 파일 경로 생성 완료");
         // 디렉토리가 없으면 생성
         if (!Files.exists(targetLocation.getParent())) {
+            log.info("파일 경로 생성");
             Files.createDirectories(targetLocation.getParent());
         }
 
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
+        log.info("파일 붙여넣기");
         // Create a new PostImage instance and save it
         PostImage postImage = new PostImage();
         postImage.setPost(post);
         postImage = postImageRepository.save(postImage);
+        log.info("postimage 생성완료");
 
         Image image = new Image();
         image.setImgUrl(targetLocation.toString());
-        image.setPostImg(postImage); // Set the PostImage to the Image
+        image.setPostImg(postImage);
+        // Set the PostImage to the Image
+        log.info("image 객체 생성 완료");
         return image;
     }
 }
