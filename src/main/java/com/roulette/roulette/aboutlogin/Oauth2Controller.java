@@ -175,7 +175,7 @@ public class Oauth2Controller {
 
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
 
-            HttpSession session=req.getSession(false);
+            HttpSession session=req.getSession();
             log.info("session exist:{}",session);
             session.setAttribute("member",m);
             List<Object> obj=new ArrayList<>();
@@ -187,7 +187,7 @@ public class Oauth2Controller {
 
             Long id=memberService.membersave(new MemberDto(email,username));
 
-            HttpSession session=req.getSession(false);
+            HttpSession session=req.getSession();
             Member m=memberJpaRepository.findById(id).get();
             session.setAttribute("member",m);
 
