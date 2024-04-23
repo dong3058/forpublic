@@ -41,7 +41,8 @@ public class ExceptionHandling {
         log.info("access token 재발행 필요");
         String accesstokenold=req.getHeader("Authorization").substring(7);
 
-        String refreshtoken=null;
+       String refreshtoken=findrefreshtoken(accesstokenold);
+
         log.info("refreshtoken in exhandler:{}",refreshtoken);
 
         try{
@@ -52,8 +53,6 @@ public class ExceptionHandling {
                 savenewtoken(accesstokenold,jwtToken);
 
 
-                resp.setHeader("Authorization", "Bearer "+jwtToken.getAccesstoken());
-
                 resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+req.getRequestURI());
             }
             else{
@@ -62,26 +61,20 @@ public class ExceptionHandling {
 
         }
         catch(RefreshNullException exception){
+            log.info("리프래시 토큰 재발급 필요---->즉 재로그인 요망");
 
-
-            resp.sendRedirect("/test/"+"no/"+"login");
+            resp.sendRedirect("/test/no/login");
         }
 
 
 
-    }
-    @ExceptionHandler(AlReadyLoginError.class)
-    public void alreadylogin(HttpServletRequest req,HttpServletResponse resp,AlReadyLoginError e)throws IOException{
-
-
-        resp.sendRedirect("/test/no"+req.getRequestURI());
     }
 
 
     @ExceptionHandler({SecurityException.class, MalformedJwtException.class, UnsupportedJwtException.class, EtcError.class})
     public void authexception(HttpServletRequest req,HttpServletResponse resp,Exception e)throws IOException{
 
-        log.info("exceotuibgabdker 작동함!!!!!!!!!:{}",req.getRequestURI());
+        log.info("기타예외들 발생:{}, 에러발생한 uri:{}",e.getClass(),req.getRequestURI());
         resp.sendRedirect("/test/no/home");
 
     }
@@ -107,5 +100,11 @@ public class ExceptionHandling {
 
         ValueOperations<String,String> operations=redisTemplate.opsForValue();
         operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000, TimeUnit.SECONDS);
+    }
+
+    public String findrefreshtoken(String token){
+        ValueOperations<String,String> operations=redisTemplate.opsForValue();
+        return operations.get(token);
+
     }
 }

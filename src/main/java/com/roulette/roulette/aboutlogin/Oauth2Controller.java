@@ -114,7 +114,6 @@ public class Oauth2Controller {
 
         try {
 
-
             JSONParser jsonParser = new JSONParser();
             JSONObject jsonObject = (JSONObject) jsonParser.parse(accessTokenResponse.getBody());
 
@@ -238,7 +237,12 @@ public class Oauth2Controller {
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> test(@PathVariable(name="accesstoken") String token, @PathVariable("redirecturl") String url){
         log.info("testurl로 성공적인 데이터 전송 성공");
-        return new ResponseEntity<>(new AccessTokenRefresh(token,"400",url,null),HttpStatus.BAD_REQUEST);
+
+        if(token.equals("no")){
+            return new ResponseEntity<>(new AccessTokenRefresh(null,"400",url,null),HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(new AccessTokenRefresh(token,"200",url,null),HttpStatus.OK);
     }
 
 
