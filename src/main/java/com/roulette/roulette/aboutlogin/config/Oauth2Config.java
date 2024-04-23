@@ -52,9 +52,9 @@ public class Oauth2Config {
                 .cors(c->c.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize)->{
-                    authorize.requestMatchers("/logouts","/api1","/code/**","/mypage/**").hasRole("user")
+                    authorize.requestMatchers("/api1","/code/**","/mypage/**").hasRole("user")
 
-                            .requestMatchers("/login/**","/","/test/**","/reqlogin/**",tokenuri,userinfouri,"http://krmp-proxy.9rum.cc:3128/**").permitAll()
+                            .requestMatchers("/login/**","/","/test/**","/reqlogin/**",tokenuri,userinfouri,"http://krmp-proxy.9rum.cc:3128/**","/logouts").permitAll()
                             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .anyRequest().permitAll();
 
