@@ -102,7 +102,7 @@ public class ExceptionHandling {
         redisTemplate.delete(oldtoken);
 
         ValueOperations<String,String> operations=redisTemplate.opsForValue();
-        operations.set(re_gen_token,refresh_token,1000, TimeUnit.SECONDS);
+        operations.set(re_gen_token,refresh_token,60, TimeUnit.SECONDS);
     }
 
     public String findrefreshtoken(String access_token){

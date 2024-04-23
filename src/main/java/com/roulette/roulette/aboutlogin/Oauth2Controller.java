@@ -244,7 +244,8 @@ public class Oauth2Controller {
         String access_token=req.getHeader("Authorization").substring(7);
         HttpSession session=req.getSession(false);
 
-        log.info("session check in logouts:{}",session);
+        log.info("session check in logouts:{},:{}",session,session.getAttribute("member"));
+
         session.invalidate();
 
 
