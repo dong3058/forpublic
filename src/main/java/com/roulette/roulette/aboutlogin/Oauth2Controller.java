@@ -176,8 +176,9 @@ public class Oauth2Controller {
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
 
             HttpSession session=req.getSession();
-            log.info("session exist:{}",session);
+
             session.setAttribute("member",m);
+            log.info("session exist:{}",session.getAttribute("member"));
             List<Object> obj=new ArrayList<>();
             obj.add(jwtToken.getAccesstoken());
             obj.add(m.getMemberId());
@@ -287,7 +288,7 @@ public class Oauth2Controller {
                 responseBody.append(line);
             }
 
-            log.info("read responsebody:{}",responseBody);
+            //log.info("read responsebody:{}",responseBody);
             return responseBody.toString();
         } catch (IOException e) {
             throw new RuntimeException("API 응답을 읽는데 실패했습니다.", e);
