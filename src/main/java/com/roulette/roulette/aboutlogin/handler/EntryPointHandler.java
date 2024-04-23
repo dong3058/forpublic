@@ -16,11 +16,13 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class EntryPointHandler implements AuthenticationEntryPoint {
-    private final HandlerExceptionResolver resolver;
+    private HandlerExceptionResolver resolver;
+    private ExceptionHandling exceptionHandling;
 
     @Autowired
-    public EntryPointHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
+    public EntryPointHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,ExceptionHandling exceptionHandling) {
         this.resolver = resolver;
+        this.exceptionHandling=exceptionHandling;
     }
 
 
@@ -29,10 +31,10 @@ public class EntryPointHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
 
         if(null!=request.getAttribute("e")) {
-            resolver.resolveException(request, response, null, (Exception) request.getAttribute("e"));
+            resolver.resolveException(request, response, exceptionHandling, (Exception) request.getAttribute("e"));
         }
         else{
-            resolver.resolveException(request, response, null, (Exception) new EtcError());
+            resolver.resolveException(request, response, exceptionHandling, (Exception) new EtcError());
         }
 
     }
