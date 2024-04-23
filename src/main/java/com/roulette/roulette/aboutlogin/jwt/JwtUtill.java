@@ -71,6 +71,30 @@ public class JwtUtill {
     }
 
 
+    public String regenaccesstoken(String username,Long id){
+
+        Random random=new Random();
+        int int_value=random.ints().limit(3).sum();
+
+        //String claim=auth.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
+
+        String claim="ROLE_user";
+        String accesstokne= Jwts.builder()
+                .claim("auth",claim)
+                .claim("user_id",id)
+                .setSubject(username)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+expiration+1))
+                .signWith(SignatureAlgorithm.HS256,key)
+                .compact();
+
+
+
+        return accesstokne;
+
+    }
+
+
 
 
 
@@ -126,11 +150,23 @@ public class JwtUtill {
     }
 
 
-    public Long getidfromtoken(String token){
+    public List<Object> getdatafromtoken(String token){
         Claims claims=getclaims(token);
         log.info("datatype:{}",claims.get("user_id").getClass());
         Integer x=(Integer)claims.get("user_id");
-        return x.longValue();
+        //String auth=(String)claims.get("auth");
+        String username=claims.getSubject();
+        List<Object> datalist=new ArrayList<>();
+        datalist.add(x);
+        datalist.add(username);
+        return datalist;
+    }
+
+
+    public Long getidfromtoken(String token){
+        Claims claims=getclaims(token);
+        Long x=(Long)claims.get("user_id");
+        return x;
     }
 
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 @ControllerAdvice
 @Slf4j
@@ -48,12 +49,12 @@ public class ExceptionHandling {
         try{
             if(refreshtoken!=null){
 
-                JwtToken jwtToken=refillaccesstoken(refreshtoken);
+                String re_gen_token=refillaccesstoken(refreshtoken);
 
-                savenewtoken(accesstokenold,jwtToken);
+                savenewtoken(accesstokenold,re_gen_token,refreshtoken);
 
 
-                resp.sendRedirect("/test/"+jwtToken.getAccesstoken()+req.getRequestURI());
+                resp.sendRedirect("/test/"+re_gen_token+req.getRequestURI());
             }
             else{
                 throw new RefreshNullException();
@@ -88,23 +89,25 @@ public class ExceptionHandling {
     }
 
 
-    public JwtToken refillaccesstoken(String token){
-        Authentication authentication=jwtUtill.getauthforrefresh(token);
-        Long id=jwtUtill.getidfromtoken(token);
-        JwtToken jwtToken=jwtUtill.genjwt2(authentication.getAuthorities(),(String) authentication.getPrincipal(),id);
-        return jwtToken;
+    public String refillaccesstoken(String refresh_token){
+        //Authentication authentication=jwtUtill.getauthforrefresh(token);
+        List<Object> datalist=jwtUtill.getdatafromtoken(refresh_token);
+        Long id=(Long) datalist.get(0);
+        String username=(String) datalist.get(1);
+        String re_token= jwtUtill.regenaccesstoken(username,id);
+        return re_token;
     }
-    public void savenewtoken(String oldtoken,JwtToken jwtToken){
+    public void savenewtoken(String oldtoken,String re_gen_token,String refresh_token){
 
         redisTemplate.delete(oldtoken);
 
         ValueOperations<String,String> operations=redisTemplate.opsForValue();
-        operations.set(jwtToken.getAccesstoken(),jwtToken.getRefreshtoken(),1000, TimeUnit.SECONDS);
+        operations.set(re_gen_token,refresh_token,1000, TimeUnit.SECONDS);
     }
 
-    public String findrefreshtoken(String token){
+    public String findrefreshtoken(String access_token){
         ValueOperations<String,String> operations=redisTemplate.opsForValue();
-        return operations.get(token);
+        return operations.get(access_token);
 
     }
 }

@@ -2,6 +2,7 @@ package com.roulette.roulette.aboutlogin;
 
 import com.roulette.roulette.aboutlogin.domaindto.MemberDto;
 import com.roulette.roulette.aboutlogin.jwt.JwtToken;
+import com.roulette.roulette.aboutlogin.repository.MemberJpaRepository;
 import com.roulette.roulette.aboutlogin.repository.MemberRepository;
 import com.roulette.roulette.aboutlogin.userinfo.CustomUserDetail;
 import com.roulette.roulette.aboutlogin.userinfo.Kakaouserdata;
@@ -13,6 +14,7 @@ import com.roulette.roulette.aboutlogin.service.MemberService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -34,9 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -64,19 +64,24 @@ public class Oauth2Controller {
 
     private MemberRepository memberRepository;
 
+    private MemberJpaRepository memberJpaRepository;
+
+
     @Autowired
-    public Oauth2Controller(@Qualifier("redisTemplate") RedisTemplate<String,String> redisTemplate, JwtUtill jwtUtill, MemberService memberService,MemberRepository memberRepository){
+    public Oauth2Controller(@Qualifier("redisTemplate") RedisTemplate<String,String> redisTemplate, JwtUtill jwtUtill, MemberService memberService,MemberRepository memberRepository
+    ,MemberJpaRepository memberJpaRepository){
         this.redisTemplate=redisTemplate;
 
         this.jwtUtill=jwtUtill;
         this.memberService=memberService;
         this.memberRepository=memberRepository;
+        this.memberJpaRepository=memberJpaRepository;
     }
 
 
     @PostMapping("/reqlogin")
     @ResponseBody
-    public ResponseEntity<AccessTokenRefresh> loginreal(@RequestBody Access_Code accessCode, HttpServletResponse resp){
+    public ResponseEntity<AccessTokenRefresh> loginreal(@RequestBody Access_Code accessCode,HttpServletRequest req, HttpServletResponse resp){
         log.info("-------------access_code---------:{}",accessCode.getAccess_code());
         log.info("kakakoredirdct:{}",kakakoredirecturi);
         log.info("kakaoid:{}",kakaoclientid);
@@ -134,17 +139,21 @@ public class Oauth2Controller {
             String email = (String) kakao_account.get("email");
             String userName = (String) properties.get("nickname");
 
-            Optional<Member> member=memberService.findmemberbyemail(email);
+            //Optional<Member> member=memberService.findmemberbyemail(email);
+
+            Optional<Member> member=memberJpaRepository.findById(loginId);
+
+
+            List<Object> token_id_list = gettokenandresponse(email, userName, member, resp,req);
 
 
 
 
-            String token = gettokenandresponse(email, userName, member, resp);
 
 
-            log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token);
+            log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token_id_list.get(0));
 
-            return new ResponseEntity<>(new AccessTokenRefresh(token,"200","/", jwtUtill.getidfromtoken(token)),HttpStatus.OK);
+            return new ResponseEntity<>(new AccessTokenRefresh((String) token_id_list.get(0),"200","/",(Long) token_id_list.get(1)),HttpStatus.OK);
 
 
         } catch (Exception e) {
@@ -160,25 +169,35 @@ public class Oauth2Controller {
 
 
 
-    public String gettokenandresponse(String email,String username,Optional<Member> member, HttpServletResponse resp) throws IOException{
+    public List<Object> gettokenandresponse(String email, String username, Optional<Member> member, HttpServletResponse resp, HttpServletRequest req) throws IOException{
         if(member.isPresent()){
             Member m=member.get();
 
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
 
-
-
-
-            return jwtToken.getAccesstoken();
+            HttpSession session=req.getSession(false);
+            session.setAttribute("member",m);
+            List<Object> obj=new ArrayList<>();
+            obj.add(jwtToken.getAccesstoken());
+            obj.add(m.getMemberId());
+            return obj;
         }
         else{
 
             Long id=memberService.membersave(new MemberDto(email,username));
 
+            HttpSession session=req.getSession(false);
+            Member m=memberJpaRepository.findById(id).get();
+            session.setAttribute("member",m);
+
+
+
             JwtToken jwtToken=jwtUtill.genjwt(username,id);
 
-
-            return jwtToken.getAccesstoken();
+            List<Object> obj=new ArrayList<>();
+            obj.add(jwtToken.getAccesstoken());
+            obj.add(m.getMemberId());
+            return obj;
         }
 
     }
