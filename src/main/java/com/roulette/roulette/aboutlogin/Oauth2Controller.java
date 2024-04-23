@@ -190,7 +190,7 @@ public class Oauth2Controller {
             HttpSession session=req.getSession();
             Member m=memberJpaRepository.findById(id).get();
             session.setAttribute("member",m);
-
+            log.info("session exist:{}",session.getAttribute("member"));
 
 
             JwtToken jwtToken=jwtUtill.genjwt(username,id);
