@@ -175,10 +175,10 @@ public class Oauth2Controller {
 
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
 
-            HttpSession session=req.getSession();
+            /*HttpSession session=req.getSession();
 
             session.setAttribute("member",m);
-            log.info("session exist:{}",session.getAttribute("member"));
+            log.info("session exist:{}",session.getAttribute("member"));*/
             List<Object> obj=new ArrayList<>();
             obj.add(jwtToken.getAccesstoken());
             obj.add(m.getMemberId());
@@ -243,11 +243,11 @@ public class Oauth2Controller {
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> logout(HttpServletRequest req){
         String access_token=req.getHeader("Authorization").substring(7);
-        HttpSession session=req.getSession(false);
+        //HttpSession session=req.getSession(false);
 
-        log.info("session check in logouts:{},:{}",session,session.getAttribute("member"));
+        //log.info("session check in logouts:{},:{}",session,session.getAttribute("member"));
 
-        session.invalidate();
+        //session.invalidate();
 
 
         log.info("로그아웃용 accesstoken:{}",access_token);

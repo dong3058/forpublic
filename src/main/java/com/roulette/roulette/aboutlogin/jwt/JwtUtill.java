@@ -102,7 +102,7 @@ public class JwtUtill {
 
 
 
-   public JwtToken genjwt2(Collection< ? extends GrantedAuthority> auth, String username, Long id){
+   /*public JwtToken genjwt2(Collection< ? extends GrantedAuthority> auth, String username, Long id){
 
         Random random=new Random();
         int int_value=random.ints().limit(3).sum();
@@ -135,8 +135,8 @@ public class JwtUtill {
                 .build();
 
 
-    }
-    public Authentication getauthforrefresh(String token) {
+    }*/
+    /*public Authentication getauthforrefresh(String token) {
         Claims claims = getclaims(token);
 
         List<SimpleGrantedAuthority> auth=new ArrayList<>();
@@ -150,7 +150,7 @@ public class JwtUtill {
 
         return usernamePasswordAuthenticationToken;
 
-    }
+    }*/
 
 
     public List<Object> getdatafromtoken(String token){
