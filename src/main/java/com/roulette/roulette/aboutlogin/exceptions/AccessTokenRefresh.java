@@ -10,10 +10,14 @@ public class AccessTokenRefresh {
 
     private Long member_id;
 
-    public AccessTokenRefresh(String access_token, String code, String redirect_url,Long id) {
+
+    private String user_image_url;
+
+    public AccessTokenRefresh(String access_token, String code, String redirect_url,Long id,String url) {
         this.access_token = access_token;
         this.code = code;
         this.redirect_url = redirect_url;
         this.member_id=id;
+        this.user_image_url=url;
     }
 }

@@ -160,7 +160,7 @@ public class Oauth2Controller {
 
 
             log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token_id_list.get(0));
-            return new ResponseEntity<>(new AccessTokenRefresh((String) token_id_list.get(0),"200","/",(Long) token_id_list.get(1)),HttpStatus.OK);
+            return new ResponseEntity<>(new AccessTokenRefresh((String) token_id_list.get(0),"200","/",(Long) token_id_list.get(1),user_profile_image),HttpStatus.OK);
 
 
         } catch (Exception e) {
@@ -261,7 +261,7 @@ public class Oauth2Controller {
         log.info("로그아웃용 accesstoken:{}",access_token);
         redisTemplate.delete(access_token);
         log.info("--------로그아웃 성공--------------");
-        return new ResponseEntity<>(new AccessTokenRefresh(null,"200","/",null), HttpStatus.OK);
+        return new ResponseEntity<>(new AccessTokenRefresh(null,"200","/",null,null), HttpStatus.OK);
 
     }
     @GetMapping("/test/{accesstoken}/{redirecturl}")
@@ -270,10 +270,10 @@ public class Oauth2Controller {
         log.info("testurl로 성공적인 데이터 전송 성공");
 
         if(token.equals("no")){
-            return new ResponseEntity<>(new AccessTokenRefresh(null,"400",url,null),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new AccessTokenRefresh(null,"400",url,null,null),HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(new AccessTokenRefresh(token,"200",url,null),HttpStatus.OK);
+        return new ResponseEntity<>(new AccessTokenRefresh(token,"200",url,null,null),HttpStatus.OK);
     }
 
 
