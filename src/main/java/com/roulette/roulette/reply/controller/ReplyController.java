@@ -62,8 +62,9 @@ public class ReplyController {
             HttpServletRequest servletRequest
     ){
 
-        String token = servletRequest.getHeader("Authorization").substring(7);
-        Member member = memberJpaRepository.findById(jwtUtill.getidfromtoken(token)).get();
+        //String token = servletRequest.getHeader("Authorization").substring(7);
+
+        Member member = memberJpaRepository.findById(codeRequest.getMemberId()).get();
         replyService.setReply(codeRequest.getPostId(), codeRequest.getHtml(),codeRequest.getCss(), codeRequest.getJs(), member);
 
         return ResponseEntity.ok("success");

@@ -47,9 +47,9 @@ public class PostController {
     }
 
     @PostMapping(value = "/preview")
-    public ResponseEntity<Map<String, String>> previewPost(@RequestBody ChooseRequestDto request){
+    public ResponseEntity<Map<String, String>> previewPost(@RequestBody PreviewRequestDto request){
 
-        String[] codeText= replyService.selectReplyById(request.getPostId());
+        String[] codeText= replyService.selectReplyById(request.getReplyId());
 
         Map<String,String> map = new HashMap<>();
         map.put("html",codeText[0]);

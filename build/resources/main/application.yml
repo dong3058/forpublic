@@ -39,18 +39,18 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   datasource:
-    url: jdbc:mysql://localhost:3306/testdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/webide
     username: root
-    password: 1234
+    password: admin123
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         show_sql: true
         format_sql: true
         highlight_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 jwt:
   secret: abcdegfhikmlmlmlmllmlmlmllmlmlllllllllllllllllll

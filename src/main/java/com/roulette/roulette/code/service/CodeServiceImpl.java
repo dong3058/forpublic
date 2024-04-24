@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 @Service
@@ -37,6 +40,15 @@ public class CodeServiceImpl implements CodeService {
 
         String jsFile = UUID.randomUUID().toString();
         String jsPath = "uploads/code/" + jsFile;
+
+        // 디렉터리 생성
+        try {
+            Path path = Paths.get("uploads/code");
+            Files.createDirectories(path); // 필요한 모든 상위 디렉터리를 포함하여 디렉터리 생성
+        } catch (IOException e) {
+            log.info("Failed to create directories: " + e.getMessage());
+            return; // 디렉터리 생성 실패 시 함수 종료
+        }
 
         // text 파일 만들고 저장
         try {
@@ -95,6 +107,15 @@ public class CodeServiceImpl implements CodeService {
 
         String jsFile = UUID.randomUUID().toString();
         String jsPath = "uploads/code/" + jsFile;
+
+        // 디렉터리 생성
+        try {
+            Path path = Paths.get("uploads/code");
+            Files.createDirectories(path); // 필요한 모든 상위 디렉터리를 포함하여 디렉터리 생성
+        } catch (IOException e) {
+            log.info("Failed to create directories: " + e.getMessage());
+            return; // 디렉터리 생성 실패 시 함수 종료
+        }
 
         // text 파일 만들고 저장
         try {

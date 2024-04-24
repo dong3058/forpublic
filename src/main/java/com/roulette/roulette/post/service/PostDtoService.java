@@ -1,6 +1,7 @@
 package com.roulette.roulette.post.service;
 
 import com.roulette.roulette.auditing.dto.post.PostAndReplyListDto;
+import com.roulette.roulette.auditing.dto.reply.ReplyDto;
 import com.roulette.roulette.entity.Image;
 import com.roulette.roulette.entity.Post;
 import com.roulette.roulette.auditing.dto.post.PostListDto;
@@ -16,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,8 +33,6 @@ public class PostDtoService {
         String imgBase64 = null;
         Optional<Image> optionalImage = imageRepository.findByPostImg_Post(post);
         //이미지 찾는 로직
-        List<Reply> replies = replyRepository.findByPostPostId(post.getPostId());
-        //reply 찾는 로직
         if (optionalImage.isPresent()) {
             try {
                 Path imagePath = Paths.get(optionalImage.get().getImgUrl());
@@ -42,6 +42,16 @@ public class PostDtoService {
             }
         }
 
+        List<Reply> replies = replyRepository.findByPostPostId(post.getPostId());
+        List<ReplyDto> replyDtos = replies.stream()
+                .map(reply -> new ReplyDto(
+                        reply.getReplyId(),
+                        reply.getMember().getName(),
+                        reply.getMember().getMemberId(),
+                        reply.getCreateTime()
+                ))
+                .collect(Collectors.toList());
+
         return new PostAndReplyListDto(
                 post.getPostId(),
                 post.getMember().getName(),
@@ -50,7 +60,7 @@ public class PostDtoService {
                 post.getContents(),
                 imgBase64,
                 post.getCreateTime(),
-                replies
+                replyDtos
         );
     }
 

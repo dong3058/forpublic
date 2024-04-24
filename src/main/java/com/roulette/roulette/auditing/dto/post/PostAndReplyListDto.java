@@ -1,5 +1,6 @@
 package com.roulette.roulette.auditing.dto.post;
 
+import com.roulette.roulette.auditing.dto.reply.ReplyDto;
 import com.roulette.roulette.entity.Reply;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,5 +20,5 @@ public class PostAndReplyListDto {
     private String content;
     private String imgBase64;
     private LocalDateTime createTime;
-    private List<Reply> replyList;
+    private List<ReplyDto> replyList;
 }
