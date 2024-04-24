@@ -132,8 +132,6 @@ public class Oauth2Controller {
 
             JSONObject profile = (JSONObject) jsonParser.parse(responseBody);
 
-            log.info("profile:{}",profile);
-            System.out.println(profile);
             JSONObject properties = (JSONObject) profile.get("properties");
 
             System.out.println(properties);
@@ -145,6 +143,10 @@ public class Oauth2Controller {
             Long loginId = (Long) profile.get("id");
             String email = (String) kakao_account.get("email");
             String userName = (String) properties.get("nickname");
+
+            String user_profile_image=(String) properties.get("profile_image");
+
+            log.info("useimage:{}",user_profile_image);
 
             Optional<Member> member=memberService.findmemberbyemail(email);
 
