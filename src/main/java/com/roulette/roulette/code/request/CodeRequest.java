@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CodeRequest {
+    private Long memberId;
     private Long postId;
     private String html;
     private String css;
