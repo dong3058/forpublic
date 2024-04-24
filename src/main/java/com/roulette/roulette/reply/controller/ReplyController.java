@@ -29,13 +29,13 @@ public class ReplyController {
             HttpServletRequest servletRequest
     ){
 
-        Member member1 = memberJpaRepository.findById(1L).get();
+        Member member = memberJpaRepository.findById(codeRequest.getMemberId()).get();
 
-        HttpSession session = servletRequest.getSession();
+        //HttpSession session = servletRequest.getSession();
 
-        session.setAttribute("member", member1);
+        //session.setAttribute("member", member1);
 
-        Member member = (Member) session.getAttribute("member");
+        //Member member = (Member) session.getAttribute("member");
         replyService.setReply(codeRequest.getPostId(), codeRequest.getHtml(),codeRequest.getCss(), codeRequest.getJs(), member);
 
         return ResponseEntity.ok("success");
