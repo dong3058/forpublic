@@ -147,13 +147,17 @@ public class Oauth2Controller {
             List<Object> token_id_list = gettokenandresponse(email, userName, member, resp,req);
 
 
+            //HttpHeaders httpHeaders=new HttpHeaders();
+            //httpHeaders.set("session-id",(String)token_id_list.get(2));
 
+            MultiValueMap<String,String> httpheaders=new LinkedMultiValueMap<>();
+
+            httpheaders.set("session_id",(String) token_id_list.get(2));
 
 
 
             log.info("다시만든 제발 되라 으어ㅜ퍼ㅜtoken:{}",token_id_list.get(0));
-
-            return new ResponseEntity<>(new AccessTokenRefresh((String) token_id_list.get(0),"200","/",(Long) token_id_list.get(1)),HttpStatus.OK);
+            return new ResponseEntity<>(new AccessTokenRefresh((String) token_id_list.get(0),"200","/",(Long) token_id_list.get(1)),httpheaders,HttpStatus.OK);
 
 
         } catch (Exception e) {
@@ -175,23 +179,25 @@ public class Oauth2Controller {
 
             JwtToken jwtToken=jwtUtill.genjwt(username,m.getMemberId());
 
-            ///HttpSession session=req.getSession();
+            HttpSession session=req.getSession();
 
-            //session.setAttribute("member",m);
-            //log.info("session exist:{}",session.getAttribute("member"));
+            session.setAttribute("member",m);
+            log.info("session exist:{}",session.getAttribute("member"));
             List<Object> obj=new ArrayList<>();
             obj.add(jwtToken.getAccesstoken());
             obj.add(m.getMemberId());
+            obj.add(session.getId());
+
             return obj;
         }
         else{
 
             Long id=memberService.membersave(new MemberDto(email,username));
 
-            //HttpSession session=req.getSession();
+            HttpSession session=req.getSession();
             Member m=memberJpaRepository.findById(id).get();
-           // session.setAttribute("member",m);
-            //log.info("session exist:{}",session.getAttribute("member"));
+            session.setAttribute("member",m);
+            log.info("session exist:{}",session.getAttribute("member"));
 
 
             JwtToken jwtToken=jwtUtill.genjwt(username,id);
@@ -199,6 +205,7 @@ public class Oauth2Controller {
             List<Object> obj=new ArrayList<>();
             obj.add(jwtToken.getAccesstoken());
             obj.add(m.getMemberId());
+            obj.add(session.getId());
             return obj;
         }
 
@@ -246,7 +253,10 @@ public class Oauth2Controller {
 
         String access_token=req.getHeader("Authorization").substring(7);
         log.info("로그아웃 헤더값:{}",access_token);
+        HttpSession httpSession=req.getSession(false);
+        log.info("세션값찾기:{}",req.getHeader("session_id"));
 
+        log.info("맞나?:{}");
         //HttpSession session=req.getSession(false);
 
         //log.info("session check in logouts:{},:{}",session,session.getAttribute("member"));
