@@ -39,10 +39,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/webide
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://mariadb:3306/krampoline?allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: admin123
+    password: root
   jpa:
     properties:
       hibernate:
@@ -50,7 +50,7 @@ spring:
         format_sql: true
         highlight_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
 
 jwt:
   secret: abcdegfhikmlmlmlmllmlmlmllmlmlllllllllllllllllll
