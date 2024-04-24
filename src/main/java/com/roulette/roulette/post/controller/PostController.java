@@ -1,6 +1,10 @@
 package com.roulette.roulette.post.controller;
 
+import com.roulette.roulette.aboutlogin.repository.MemberJpaRepository;
+import com.roulette.roulette.aboutlogin.repository.MemberRepository;
 import com.roulette.roulette.auditing.dto.post.*;
+import com.roulette.roulette.code.request.CodeRequest;
+import com.roulette.roulette.entity.Member;
 import com.roulette.roulette.post.service.PostService;
 import com.roulette.roulette.reply.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,9 @@ public class PostController {
     @Autowired
     private ReplyService replyService;
 
+    @Autowired
+    private MemberJpaRepository memberRepository;
+
     @GetMapping("/list/{page}")
     public Page<PostListDto> getPostList(@PathVariable int page) {
         return postService.getRecentPosts(page, 10);
@@ -35,9 +42,12 @@ public class PostController {
     }
 
     @PostMapping("/choice")
-    public ResponseEntity<Void> chooseReply(@RequestBody ChooseRequestDto request) {
-        postService.setPostChoiceComplete(request.getPostId());
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> chooseReply(@RequestBody CodeRequest codeRequest) {
+        postService.setPostChoiceComplete(codeRequest.getPostId());
+        Member member = memberRepository.findById(codeRequest.getMemberId()).get();
+        replyService.setReply(codeRequest.getPostId(), codeRequest.getHtml(),codeRequest.getCss(), codeRequest.getJs(), member);
+
+        return ResponseEntity.ok("success");
     }
 
     @PostMapping(value = "/ask", consumes = "multipart/form-data")
