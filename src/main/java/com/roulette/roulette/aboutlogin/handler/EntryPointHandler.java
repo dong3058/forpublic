@@ -29,11 +29,13 @@ public class EntryPointHandler implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-
+        log.info("엔트리포인트 핸들러작동");
         if(null!=request.getAttribute("e")) {
+            log.info("jwt관련에러");
             resolver.resolveException(request, response, null, (Exception) request.getAttribute("e"));
         }
         else{
+            log.info("기타에러");
             resolver.resolveException(request, response, null, (Exception) new EtcError());
         }
 

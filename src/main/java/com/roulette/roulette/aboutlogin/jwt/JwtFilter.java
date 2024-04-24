@@ -47,7 +47,7 @@ public class JwtFilter extends GenericFilterBean {
         }
         }
         catch(Exception e){
-            log.info("-----------error in jwtfilter---------------");
+            log.info("-----------error in jwtfilter---------------:{}",e.getClass());
             servletRequest.setAttribute("e",e);
         }
 
