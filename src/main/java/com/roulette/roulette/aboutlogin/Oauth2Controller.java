@@ -131,7 +131,14 @@ public class Oauth2Controller {
             String responseBody=getproxy2(userinfouri,requestHeaders,header);
 
             JSONObject profile = (JSONObject) jsonParser.parse(responseBody);
+
+            log.info("profile:{}",profile);
+            System.out.println(profile);
             JSONObject properties = (JSONObject) profile.get("properties");
+
+            System.out.println(properties);
+
+
             JSONObject kakao_account = (JSONObject) profile.get("kakao_account");
 
 
