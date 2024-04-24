@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.roulette.roulette.aboutlogin")
 @Slf4j
 public class ExceptionHandling {
     private JwtUtill jwtUtill;
@@ -55,7 +55,7 @@ public class ExceptionHandling {
                 deloldtoken(accesstokenold);
 
 
-                resp.sendRedirect("/test/"+re_gen_token+req.getRequestURI());
+                resp.sendRedirect("/test/"+re_gen_token.getAccesstoken()+req.getRequestURI());
             }
             else{
                 throw new RefreshNullException();
