@@ -242,7 +242,11 @@ public class Oauth2Controller {
     @GetMapping("/logouts")
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> logout(HttpServletRequest req){
-        String access_token=req.getHeader("Authorization").substring(7);
+
+
+        String access_token=req.getHeader("Authorization");
+        log.info("로그아웃 헤더값:{}",access_token);
+        //.substring(7);
         //HttpSession session=req.getSession(false);
 
         //log.info("session check in logouts:{},:{}",session,session.getAttribute("member"));

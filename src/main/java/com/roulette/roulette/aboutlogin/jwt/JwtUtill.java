@@ -48,7 +48,7 @@ public class JwtUtill {
                 .claim("randkey",int_value)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+expiration+1))
+                .setExpiration(new Date(System.currentTimeMillis()+expiration+3000000))
                 .signWith(SignatureAlgorithm.HS256,key)
                 .compact();
 
