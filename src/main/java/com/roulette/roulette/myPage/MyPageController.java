@@ -34,7 +34,7 @@ public class MyPageController {
     // 내정보 조회하기
     @GetMapping("/member")
     public ResponseEntity<MemberDTO> getAllMembers(HttpServletRequest req) {
-        String access_token=req.getHeader("Authorization");
+        String access_token=req.getHeader("Authorization").substring(7);
         Long member_id = jwtUtill.getidfromtoken(access_token);
         MemberDTO memberDTO = myPageService.getMemberDTO(member_id);
         if (memberDTO == null)
