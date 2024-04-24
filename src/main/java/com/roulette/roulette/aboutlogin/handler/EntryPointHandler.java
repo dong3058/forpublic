@@ -32,11 +32,11 @@ public class EntryPointHandler implements AuthenticationEntryPoint {
         log.info("엔트리포인트 핸들러작동");
         if(null!=request.getAttribute("e")) {
             log.info("jwt관련에러");
-            resolver.resolveException(request, response, exceptionHandling, (Exception) request.getAttribute("e"));
+            resolver.resolveException(request, response, null, (Exception) request.getAttribute("e"));
         }
         else{
             log.info("기타에러");
-            resolver.resolveException(request, response, exceptionHandling, (Exception) new EtcError());
+            resolver.resolveException(request, response, null, (Exception) new EtcError());
         }
 
     }
