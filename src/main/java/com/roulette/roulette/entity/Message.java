@@ -22,7 +22,7 @@ public class Message {
     @JoinColumn(name = "sender_id", nullable = false)
     private Member sender;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false,columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String content;
 
     @Column(name = "timestamp", nullable = false)

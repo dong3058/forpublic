@@ -25,11 +25,11 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(name = "title")
+    @Column(name = "title",columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     @NotNull
     private String title;
 
-    @Column(name = "contents")
+    @Column(name = "contents",columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String contents;
 
     @CreatedDate

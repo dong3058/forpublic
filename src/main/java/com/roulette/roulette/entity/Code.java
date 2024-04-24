@@ -16,13 +16,13 @@ public class Code {
     @Column(name = "code_id")
     private Long codeId;
 
-    @Column(name = "html_code_url")
+    @Column(name = "html_code_url",columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String htmlCodeUrl;
 
-    @Column(name = "css_code_url")
+    @Column(name = "css_code_url",columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String cssCodeUrl;
 
-    @Column(name = "js_code_url")
+    @Column(name = "js_code_url",columnDefinition = "VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String jsCodeUrl;
 
     @OneToOne(mappedBy = "code")

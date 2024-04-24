@@ -39,18 +39,18 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb:3306/krampoline?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/testdb
     username: root
-    password: root
+    password: 1234
   jpa:
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         show_sql: true
         format_sql: true
         highlight_sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
 
 jwt:
   secret: abcdegfhikmlmlmlmllmlmlmllmlmlllllllllllllllllll

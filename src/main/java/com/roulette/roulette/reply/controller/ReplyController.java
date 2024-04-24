@@ -1,5 +1,6 @@
 package com.roulette.roulette.reply.controller;
 
+import com.roulette.roulette.aboutlogin.jwt.JwtUtill;
 import com.roulette.roulette.aboutlogin.repository.MemberJpaRepository;
 import com.roulette.roulette.code.request.CodeRequest;
 import com.roulette.roulette.entity.Member;
@@ -23,7 +24,8 @@ public class ReplyController {
 
     private final ReplyService replyService;
     private final MemberJpaRepository memberJpaRepository;
-    @PostMapping
+    private final JwtUtill jwtUtill;
+   /* @PostMapping
     public ResponseEntity<String> setReply(
             @RequestBody CodeRequest codeRequest,
             HttpServletRequest servletRequest
@@ -43,6 +45,32 @@ public class ReplyController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Map> downloadFile(@PathVariable (value = "id") Long id) {
+
+        String[] codeText= replyService.selectReplyById(id);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("html",codeText[0]);
+        map.put("css",codeText[1]);
+        map.put("js",codeText[2]);
+
+        return ResponseEntity.ok(map);
+
+    }*/
+    @PostMapping
+    public ResponseEntity<String> uploadReply(
+            @RequestBody CodeRequest codeRequest,
+            HttpServletRequest servletRequest
+    ){
+
+        String token = servletRequest.getHeader("Authorization").substring(7);
+        Member member = memberJpaRepository.findById(jwtUtill.getidfromtoken(token)).get();
+        replyService.setReply(codeRequest.getPostId(), codeRequest.getHtml(),codeRequest.getCss(), codeRequest.getJs(), member);
+
+        return ResponseEntity.ok("success");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Map> downloadReplyCode(@PathVariable (value = "id") Long id) {
 
         String[] codeText= replyService.selectReplyById(id);
 
