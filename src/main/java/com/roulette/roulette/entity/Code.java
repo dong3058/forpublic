@@ -1,44 +1,39 @@
 package com.roulette.roulette.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "code")
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 @Data
 public class Code {
-    @Id
+    @Id@GeneratedValue
     @Column(name = "code_id")
-    private String codeId;
+    private Long codeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @Column(name = "html_code_url")
+    private String htmlCodeUrl;
 
-    @Column(name = "code_url")
-    private String codeUrl;
+    @Column(name = "css_code_url")
+    private String cssCodeUrl;
 
-    @Column(name = "confirm")
-    private String confirm;
+    @Column(name = "js_code_url")
+    private String jsCodeUrl;
 
-    @CreatedDate
-    @Column(name = "create_time")
-    private LocalDateTime createTime;
+    @OneToOne(mappedBy = "code")
+    private Reply reply;
 
-    @LastModifiedDate
-    @Column(name = "update_time")
-    private LocalDateTime  updateTime;
-
-    @Column(name = "delete_time")
-    private LocalDateTime  deleteTime;
-
-    @Column(name = "code_name")
-    private String codeName;
-
+    @Builder
+    public Code(Long codeId, String htmlCodeUrl, String cssCodeUrl, String jsCodeUrl, Reply reply) {
+        this.codeId = codeId;
+        this.htmlCodeUrl = htmlCodeUrl;
+        this.cssCodeUrl = cssCodeUrl;
+        this.jsCodeUrl = jsCodeUrl;
+        this.reply = reply;
+    }
 }

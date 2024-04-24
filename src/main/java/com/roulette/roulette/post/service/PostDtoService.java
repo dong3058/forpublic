@@ -1,12 +1,12 @@
 package com.roulette.roulette.post.service;
 
-import com.roulette.roulette.dto.post.PostAndReplyListDto;
+import com.roulette.roulette.auditing.dto.post.PostAndReplyListDto;
 import com.roulette.roulette.entity.Image;
 import com.roulette.roulette.entity.Post;
-import com.roulette.roulette.dto.post.PostListDto;
+import com.roulette.roulette.auditing.dto.post.PostListDto;
 import com.roulette.roulette.entity.Reply;
 import com.roulette.roulette.post.repository.ImageRepository;
-import com.roulette.roulette.post.repository.ReplyRepository;
+import com.roulette.roulette.reply.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

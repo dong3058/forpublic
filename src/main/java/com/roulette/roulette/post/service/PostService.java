@@ -1,12 +1,12 @@
 package com.roulette.roulette.post.service;
 
-import com.roulette.roulette.dto.post.PostAndReplyListDto;
+import com.roulette.roulette.auditing.dto.post.PostAndReplyListDto;
 import com.roulette.roulette.entity.Image;
 import com.roulette.roulette.entity.Member;
 import com.roulette.roulette.entity.Post;
 import com.roulette.roulette.entity.PostImage;
-import com.roulette.roulette.dto.post.AskPostRequestDto;
-import com.roulette.roulette.dto.post.PostListDto;
+import com.roulette.roulette.auditing.dto.post.AskPostRequestDto;
+import com.roulette.roulette.auditing.dto.post.PostListDto;
 import com.roulette.roulette.post.repository.ImageRepository;
 import com.roulette.roulette.aboutlogin.repository.MemberJpaRepository;
 import com.roulette.roulette.post.repository.PostImageRepository;
@@ -118,4 +118,5 @@ public class PostService {
         image.setPostImg(postImage); // Set the PostImage to the Image
         return image;
     }
+
 }

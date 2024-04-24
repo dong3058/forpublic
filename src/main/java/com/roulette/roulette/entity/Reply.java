@@ -1,19 +1,18 @@
 package com.roulette.roulette.entity;
 
+import com.roulette.roulette.auditing.Period;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table
+@Table(name = "reply")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public class Reply {
-
+@NoArgsConstructor
+public class Reply extends Period {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reply_id")
@@ -27,18 +26,20 @@ public class Reply {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "code_id")
     private Code code;
 
-    @CreatedDate
-    @Column(name = "create_time")
-    private LocalDateTime createTime;
+    @Builder
+    public Reply(Long replyId, Post post, Member member, Code code) {
+        this.replyId = replyId;
+        this.post = post;
+        this.member = member;
+        this.code = code;
+    }
 
-    @LastModifiedDate
-    @Column(name = "update_time")
-    private LocalDateTime updateTime;
+    public void add(Code code){
+        this.code = code;
+    }
 
-    @Column(name = "delete_time")
-    private LocalDateTime deleteTime;
 }
