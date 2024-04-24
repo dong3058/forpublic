@@ -23,7 +23,7 @@ public class ReplyController {
 
     private final ReplyService replyService;
     private final MemberJpaRepository memberJpaRepository;
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<String> setReply(
             @RequestBody CodeRequest codeRequest,
             HttpServletRequest servletRequest
