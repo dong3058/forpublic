@@ -1,11 +1,13 @@
 package com.roulette.roulette.chatting.controller;
 
+import com.roulette.roulette.chatting.dto.ChatStartRequest;
 import com.roulette.roulette.chatting.dto.MessageDTO;
 import com.roulette.roulette.chatting.service.MessagingService;
 import com.roulette.roulette.entity.Conversation;
 import com.roulette.roulette.entity.Member;
 import com.roulette.roulette.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ChatController {
@@ -81,6 +85,12 @@ public class ChatController {
         messagingTemplate.convertAndSend(destination, message);
 
         return savedMessage;
+    }
+
+    @PostMapping("/chat/start")
+    public ResponseEntity<String> startChat(@RequestBody ChatStartRequest request){
+        messagingService.startChat(request.getSender(), request.getReceiver(), request.getMessage());
+        return ResponseEntity.ok("대화가 시작되었습니다.");
     }
 
 //    // 웹소켓 구독자에게 메시지를 보냅니다. (예시: 새 메시지 알림)

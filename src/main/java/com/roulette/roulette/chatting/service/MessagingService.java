@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,5 +74,22 @@ public class MessagingService {
     public Member getMember(Long memberId) {
         return memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member not found with id: " + memberId));
+    }
+
+    public void startChat(Long senderid, Long receiverid, String context) {
+        Member sender = getMember(senderid);
+        Member receiver = getMember(receiverid);
+        Conversation conversation = new Conversation();
+        conversation.setMembers(new HashSet<>(Arrays.asList(sender, receiver)));
+        conversationRepository.save(conversation);
+
+        Message startmessage = new Message();
+        startmessage.setConversation(conversation);
+        startmessage.setSender(sender);
+        startmessage.setContent("채팅을 시작합니다.");
+        startmessage.setTimestamp(System.currentTimeMillis());
+
+        messageRepository.save(startmessage);
+
     }
 }
