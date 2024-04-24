@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.io.IOException;
 import java.util.List;
 
-@ControllerAdvice(basePackages = "com.roulette.roulette.aboutlogin")
+@ControllerAdvice
 @Slf4j
 public class MyExceptionHandler {
     private JwtUtill jwtUtill;
