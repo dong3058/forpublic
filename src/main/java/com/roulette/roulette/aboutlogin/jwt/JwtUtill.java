@@ -45,6 +45,7 @@ public class JwtUtill {
         String accesstokne= Jwts.builder()
                 .claim("auth",claim)
                 .claim("user_id",id)
+                .claim("randkey",int_value)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+expiration+1))
@@ -82,9 +83,10 @@ public class JwtUtill {
         String accesstokne= Jwts.builder()
                 .claim("auth",claim)
                 .claim("user_id",id)
+                .claim("randkey",int_value)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+expiration+60000))
+                .setExpiration(new Date(System.currentTimeMillis()+expiration+1))
                 .signWith(SignatureAlgorithm.HS256,key)
                 .compact();
 
@@ -109,6 +111,7 @@ public class JwtUtill {
         String accesstokne= Jwts.builder()
                 .claim("auth",claim)
                 .claim("user_id",id)
+                .claim("randkey",int_value)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+expiration+60000))

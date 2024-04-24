@@ -6,6 +6,7 @@ import com.roulette.roulette.aboutlogin.exceptions.RefreshNullException;
 import com.roulette.roulette.aboutlogin.jwt.JwtToken;
 import com.roulette.roulette.aboutlogin.jwt.JwtUtill;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,9 +50,9 @@ public class ExceptionHandling {
         try{
             if(refreshtoken!=null){
 
-                String re_gen_token=refillaccesstoken(refreshtoken);
+                JwtToken re_gen_token=refillaccesstoken(refreshtoken);
 
-                savenewtoken(accesstokenold,re_gen_token,refreshtoken);
+                deloldtoken(accesstokenold);
 
 
                 resp.sendRedirect("/test/"+re_gen_token+req.getRequestURI());
@@ -89,20 +90,21 @@ public class ExceptionHandling {
     }
 
 
-    public String refillaccesstoken(String refresh_token){
+    public JwtToken refillaccesstoken(String refresh_token){
         //Authentication authentication=jwtUtill.getauthforrefresh(token);
         List<Object> datalist=jwtUtill.getdatafromtoken(refresh_token);
         Long id=(Long) datalist.get(0);
         String username=(String) datalist.get(1);
-        String re_token= jwtUtill.regenaccesstoken(username,id);
-        return re_token;
+
+        JwtToken re_gen_token=jwtUtill.genjwt(username,id);
+        return re_gen_token;
     }
-    public void savenewtoken(String oldtoken,String re_gen_token,String refresh_token){
+    public void deloldtoken(String oldtoken){
 
         redisTemplate.delete(oldtoken);
 
-        ValueOperations<String,String> operations=redisTemplate.opsForValue();
-        operations.set(re_gen_token,refresh_token,60, TimeUnit.SECONDS);
+        //ValueOperations<String,String> operations=redisTemplate.opsForValue();
+        //operations.set(re_gen_token.getAccesstoken(),re_gen_token.getRefreshtoken(),60, TimeUnit.SECONDS);
     }
 
     public String findrefreshtoken(String access_token){
