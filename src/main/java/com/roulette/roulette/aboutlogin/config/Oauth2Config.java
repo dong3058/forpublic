@@ -21,9 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -87,12 +84,7 @@ public class Oauth2Config {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // 출처 목록에 localhost:3030 추가
-        List<String> allowedOrigins = Arrays.asList(
-                "https://k56733b335962a.user-app.krampoline.com",
-                "http://localhost:3030"  // 로컬 개발 서버
-        );
-        configuration.setAllowedOrigins(allowedOrigins); // 여러 출처 허용
+        configuration.addAllowedOrigin("https://k56733b335962a.user-app.krampoline.com");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);
