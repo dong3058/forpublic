@@ -17,10 +17,10 @@ import java.io.IOException;
 @Component
 public class EntryPointHandler implements AuthenticationEntryPoint {
     private HandlerExceptionResolver resolver;
-    private ExceptionHandling exceptionHandling;
+    private MyExceptionHandler exceptionHandling;
 
     @Autowired
-    public EntryPointHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver,ExceptionHandling exceptionHandling) {
+    public EntryPointHandler(@Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver, MyExceptionHandler exceptionHandling) {
         this.resolver = resolver;
        this.exceptionHandling=exceptionHandling;
     }
