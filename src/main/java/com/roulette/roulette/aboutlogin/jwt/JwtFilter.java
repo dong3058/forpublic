@@ -37,6 +37,7 @@ public class JwtFilter extends GenericFilterBean {
 
         String token=resolvetoken((HttpServletRequest) servletRequest);
         log.info("-----------------filter start--------------");
+        log.info("---------------req uri:{}",((HttpServletRequest) servletRequest).getRequestURI());
         log.info("filter-token:{}",token);
         try{if(token!=null&&jwtUtill.validatetoken(token)){
             log.info("--------------success in jwt filter---------");
