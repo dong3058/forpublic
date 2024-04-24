@@ -1,11 +1,9 @@
 package com.roulette.roulette.auditing.dto.post;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Getter @Setter
+@NoArgsConstructor
 public class PreviewRequestDto {
     private Long replyId;
 }
