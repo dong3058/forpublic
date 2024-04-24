@@ -36,9 +36,10 @@ public class JwtFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         String token=resolvetoken((HttpServletRequest) servletRequest);
-
+        log.info("-----------------filter start--------------");
+        log.info("filter-token:{}",token);
         try{if(token!=null&&jwtUtill.validatetoken(token)){
-
+            log.info("--------------success in jwt filter---------");
             Boolean tokenchec=jwtUtill.validatetoken(token);
             Authentication authentication= jwtUtill.getauth(token);
 
@@ -46,7 +47,7 @@ public class JwtFilter extends GenericFilterBean {
         }
         }
         catch(Exception e){
-
+            log.info("-----------error in jwtfilter---------------");
             servletRequest.setAttribute("e",e);
         }
 
