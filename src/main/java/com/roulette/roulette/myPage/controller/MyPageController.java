@@ -1,9 +1,10 @@
-package com.roulette.roulette.myPage;
+package com.roulette.roulette.myPage.controller;
 
 import com.roulette.roulette.aboutlogin.jwt.JwtUtill;
 import com.roulette.roulette.auditing.dto.mypage.MemberDTO;
 import com.roulette.roulette.auditing.dto.mypage.MyPageDTO;
 import com.roulette.roulette.auditing.dto.mypage.SaveCodeDTO;
+import com.roulette.roulette.myPage.service.MyPageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

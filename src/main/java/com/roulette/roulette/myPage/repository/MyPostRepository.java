@@ -1,4 +1,4 @@
-package com.roulette.roulette.myPage.myRepository;
+package com.roulette.roulette.myPage.repository;
 
 import com.roulette.roulette.entity.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
