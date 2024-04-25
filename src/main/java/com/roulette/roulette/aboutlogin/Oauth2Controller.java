@@ -12,6 +12,12 @@ import com.roulette.roulette.aboutlogin.exceptions.AccessTokenRefresh;
 import com.roulette.roulette.aboutlogin.jwt.JwtUtill;
 import com.roulette.roulette.aboutlogin.service.MemberService;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -79,6 +85,15 @@ public class Oauth2Controller {
     }
 
 
+
+    @Operation(summary = "로그인 api",description = "로그인을 진행합니다.")
+    @ApiResponse(content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = AccessTokenRefresh.class)
+    ))
+    @Parameters({
+            @Parameter(name="accessCode",description = "oauth2에서 발급한 accesscode가 포함되어있습니다"),
+    })
     @PostMapping("/reqlogin")
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> loginreal(@RequestBody Access_Code accessCode,HttpServletRequest req, HttpServletResponse resp){
@@ -247,6 +262,13 @@ public class Oauth2Controller {
         return "api1";
     }
 
+
+
+    @Operation(summary = "로그아웃 api",description = "로그아웃을 진행합니다.")
+    @ApiResponse(content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = AccessTokenRefresh.class)
+    ))
     @GetMapping("/logouts")
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> logout(HttpServletRequest req){
@@ -264,6 +286,17 @@ public class Oauth2Controller {
         return new ResponseEntity<>(new AccessTokenRefresh(null,"200","/",null,null), HttpStatus.OK);
 
     }
+
+    @Operation(summary = "jwt오류 관련 api",description = "jwt에러 핸들링 을 진행합니다.")
+    @ApiResponse(content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = AccessTokenRefresh.class)
+    ))
+    @Parameters({
+            @Parameter(name="accesstoken",description = "jwt재발급 이필요할시 token이 포함됩니다."),
+            @Parameter(name="url",description = "리다이렉트할 url을 포함합니다.")
+
+    })
     @GetMapping("/test/{accesstoken}/{redirecturl}")
     @ResponseBody
     public ResponseEntity<AccessTokenRefresh> test(@PathVariable(name="accesstoken") String token, @PathVariable("redirecturl") String url){
