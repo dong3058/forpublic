@@ -77,9 +77,8 @@ public class PostController {
     @Operation(summary = "게시글 미리보기", description = "최종 제출 전 게시글의 미리보기를 제공합니다.")
     @ApiResponse(responseCode = "200", description = "미리보기 생성됨")
     @PostMapping(value = "/preview")
-    public ResponseEntity<Map<String, String>> previewPost(
-            @Parameter(description = "답변 ID; 해당 답변의 HTML, CSS, JS 코드를 미리 볼 수 있습니다.")
-            @RequestBody PreviewRequestDto request) {
+    @Parameter(name="request",description = "답변 ID; 해당 답변의 HTML, CSS, JS 코드를 미리 볼 수 있습니다.")
+    public ResponseEntity<Map<String, String>> previewPost(@RequestBody PreviewRequestDto request) {
         log.info("-------id check:{}",request.getReplyId());
         String[] codeText = replyService.selectReplyById(request.getReplyId());
 
