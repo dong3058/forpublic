@@ -1,5 +1,3 @@
-server:
-  port: 8080
 spring:
   application:
     name: roulette
@@ -10,13 +8,13 @@ spring:
           google:
             client-id: 205933403006-bpor9k9eoo211pelg8surprgo11jevt8.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: https://kffa9824affd9a.user-app.krampoline.com/login/oauth2/code/google
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope:
               - email
               - profile
           kakao:
             client-id: aad9fffaff5b6655b991487c5ff8b445
-            redirect-uri: https://k56733b335962a.user-app.krampoline.com/login/oauth2/callback/kakao
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope:
@@ -31,7 +29,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
   redis:
-    host: redis
+    host: localhost
     port: 6379
   thymeleaf:
     cache: false
@@ -39,10 +37,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://mariadb:3306/krampoline?allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/webIde
     username: root
-    password: root
+    password: rlawjdrb123
   jpa:
     properties:
       hibernate:
@@ -50,7 +48,7 @@ spring:
         format_sql: true
         highlight_sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
 
 jwt:
   secret: abcdegfhikmlmlmlmllmlmlmllmlmlllllllllllllllllll

@@ -5,7 +5,7 @@ import com.roulette.roulette.code.repository.CodeRepository;
 import com.roulette.roulette.entity.Code;
 import com.roulette.roulette.entity.Member;
 import com.roulette.roulette.entity.Reply;
-import com.roulette.roulette.myPage.MyPageService;
+import com.roulette.roulette.myPage.service.MyPageService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
