@@ -2,7 +2,7 @@ package com.roulette.roulette.auditing.dto.post;
 
 import lombok.*;
 
-@Getter @Setter
+@Data
 @NoArgsConstructor
 public class PreviewRequestDto {
     private Long postId;
