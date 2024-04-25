@@ -7,6 +7,7 @@ import com.roulette.roulette.code.request.CodeRequest;
 import com.roulette.roulette.entity.Member;
 import com.roulette.roulette.post.service.PostService;
 import com.roulette.roulette.reply.service.ReplyService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/post")
+@Slf4j
 public class PostController {
 
     @Autowired
@@ -59,6 +61,8 @@ public class PostController {
     @PostMapping(value = "/preview")
     public ResponseEntity<Map<String, String>> previewPost(@RequestBody PreviewRequestDto request){
 
+
+        log.info("----postpreview id check:{}",request.getReplyId());
         String[] codeText= replyService.selectReplyById(request.getReplyId());
 
         Map<String,String> map = new HashMap<>();
