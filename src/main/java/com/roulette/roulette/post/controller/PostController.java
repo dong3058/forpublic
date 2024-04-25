@@ -79,8 +79,8 @@ public class PostController {
     @PostMapping(value = "/preview")
     @Parameter(name="request",description = "답변 ID; 해당 답변의 HTML, CSS, JS 코드를 미리 볼 수 있습니다.")
     public ResponseEntity<Map<String, String>> previewPost(@RequestBody PreviewRequestDto request) {
-        log.info("-------id check:{}",request.getReplyId());
-        String[] codeText = replyService.selectReplyById(request.getReplyId());
+        log.info("-------id check:{}",request.getPostId());
+        String[] codeText = replyService.selectReplyById(request.getPostId());
 
         Map<String, String> map = new HashMap<>();
         map.put("html", codeText[0]);
